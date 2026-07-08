@@ -1,0 +1,108 @@
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { apiFetch, ensureCsrfToken, readJsonResponse } from '../utils/api';
+
+const AuthContext = createContext(null);
+
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const loadProfile = useCallback(async () => {
+    try {
+      await ensureCsrfToken();
+      const data = await readJsonResponse(await apiFetch('/api/users/me'));
+      setUser(data.user);
+    } catch (error) {
+      try {
+        const refreshed = await readJsonResponse(await apiFetch('/api/auth/refresh', { method: 'POST' }));
+        setUser(refreshed.user);
+      } catch {
+        setUser(null);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadProfile();
+  }, [loadProfile]);
+
+  const login = useCallback(async ({ email, password }) => {
+    const data = await readJsonResponse(await apiFetch('/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+    }));
+    setUser(data.user);
+    return data;
+  }, []);
+
+  const register = useCallback(async ({ name, email, password }) => {
+    return readJsonResponse(await apiFetch('/api/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({ name, email, password }),
+    }));
+  }, []);
+       
+  const verifyEmail = useCallback(async (token) => {
+    const data = await readJsonResponse(await apiFetch('/api/auth/email/verify', {
+      method: 'POST',
+      body: JSON.stringify({ token }),
+    }));
+    setUser(data.user);
+    return data;
+  }, []);
+
+  const requestPasswordReset = useCallback(async (email) => {
+    return readJsonResponse(await apiFetch('/api/auth/password/forgot', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    }));
+  }, []);
+
+  const resetPassword = useCallback(async ({ token, password }) => {
+    await apiFetch('/api/auth/password/reset', {
+      method: 'POST',
+      body: JSON.stringify({ token, password }),
+    });
+  }, []);
+
+const updateProfile = useCallback(async (profileData) => {
+  const data = await readJsonResponse(
+    await apiFetch("/api/users/me", {
+      method: "PATCH",
+      body: JSON.stringify(profileData),
+    })
+  );
+
+  setUser(data.user);
+
+  return data.user;
+}, []);
+
+  const logout = useCallback(async () => {
+    try {
+      await apiFetch('/api/auth/logout', { method: 'POST' });
+    } finally {
+      setUser(null);
+    }
+  }, []);
+
+  const value = useMemo(() => ({
+    user,
+    loading,
+    login,
+    register,
+    verifyEmail,
+    requestPasswordReset,
+    resetPassword,
+    updateProfile,
+    logout,
+  }), [user, loading, login, register, verifyEmail, requestPasswordReset, resetPassword, updateProfile, logout]);
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+
+export function useAuth() {
+  return useContext(AuthContext);
+}

@@ -1,0 +1,1023 @@
+{
+  "users": [
+    {
+      "id": "fcf4cefa-1e84-45cf-a687-e7a8722fe606",
+      "email": "kritikakriti259@gmail.com",
+      "passwordHash": "$2b$12$oqwo3P5wrPRpANHtmV.0LurJm/RYMj2MTB9IyRuwaA6X5J9mKkt.2",
+      "name": "kritika",
+      "role": "player",
+      "emailVerified": true,
+      "bio": "",
+      "avatarUrl": "",
+      "stats": {
+        "gamesPlayed": 1,
+        "wins": 0,
+        "losses": 1,
+        "draws": 0
+      },
+      "createdAt": "2026-07-06T05:37:58.178Z",
+      "updatedAt": "2026-07-06T05:57:01.720Z"
+    },
+    {
+      "id": "28138be3-ac04-4d13-a861-9b7ba5148cc9",
+      "email": "user1chess@gmail.com",
+      "passwordHash": "$2b$12$QGLEu2i3r04ty2CbGSKpV.kfJ1voHFHEAy8/6yi/tM6s2ljpXydoq",
+      "name": "user1",
+      "role": "player",
+      "emailVerified": false,
+      "bio": "",
+      "avatarUrl": "",
+      "stats": {
+        "gamesPlayed": 0,
+        "wins": 0,
+        "losses": 0,
+        "draws": 0
+      },
+      "createdAt": "2026-07-06T05:39:13.801Z",
+      "updatedAt": "2026-07-06T05:39:13.801Z"
+    },
+    {
+      "id": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "email": "user123@gmail.com",
+      "passwordHash": "$2b$12$yB63yGYrB1/HQZpkvRalGuYdsSPWjehuf34ZfFk602OxsPKS6sB3K",
+      "name": "kritika",
+      "role": "player",
+      "emailVerified": true,
+      "bio": "...................",
+      "avatarUrl": "",
+      "stats": {
+        "gamesPlayed": 1,
+        "wins": 1,
+        "losses": 0,
+        "draws": 0
+      },
+      "createdAt": "2026-07-06T05:45:27.670Z",
+      "updatedAt": "2026-07-06T09:50:30.429Z",
+      "username": "kritika_00",
+      "country": "India"
+    },
+    {
+      "id": "1e944cc8-cf32-42f3-b237-d3e8b29cf5f1",
+      "email": "kritika276591@gmail.com",
+      "passwordHash": "$2b$12$rGTv/imJuvf2AQWK7S9nFOJrokhOP9/CYnlVfhSjcZwf179o1E2V.",
+      "name": "kritika",
+      "username": "",
+      "bio": "",
+      "country": "",
+      "gender": "",
+      "dateOfBirth": "",
+      "avatarUrl": "",
+      "role": "player",
+      "emailVerified": false,
+      "rating": 1200,
+      "stats": {
+        "gamesPlayed": 0,
+        "wins": 0,
+        "losses": 0,
+        "draws": 0
+      },
+      "createdAt": "2026-07-07T06:16:22.781Z",
+      "updatedAt": "2026-07-07T06:16:22.781Z"
+    },
+    {
+      "id": "e6d3693a-fab2-486c-895b-77b7e3056c14",
+      "email": "kritik2301200@gmail.com",
+      "passwordHash": "$2b$12$Zo5JW4mOJubFhnwpTXOGt.xLJkiWrsnW8yKxb6av1DnJDVOJrXU1C",
+      "name": "kittu",
+      "username": "",
+      "bio": "",
+      "country": "",
+      "gender": "",
+      "dateOfBirth": "",
+      "avatarUrl": "",
+      "role": "player",
+      "emailVerified": false,
+      "rating": 1200,
+      "stats": {
+        "gamesPlayed": 0,
+        "wins": 0,
+        "losses": 0,
+        "draws": 0
+      },
+      "createdAt": "2026-07-07T06:19:59.098Z",
+      "updatedAt": "2026-07-07T06:19:59.098Z"
+    }
+  ],
+  "refreshTokens": [
+    {
+      "id": "498a789e-69ff-4ad5-b2a9-79fb3ad081d3",
+      "userId": "fcf4cefa-1e84-45cf-a687-e7a8722fe606",
+      "tokenHash": "b8852bf18faed2e41f4e997f1ddc462f949837e936acd0877af488fe5d98e8b8",
+      "tokenId": "3ad6ea1f-0648-4b29-ad22-0c8e055103f8",
+      "createdAt": "2026-07-06T05:38:20.457Z",
+      "expiresAt": "2026-07-13T05:38:20.457Z",
+      "revokedAt": null
+    },
+    {
+      "id": "18c3a87a-ba4e-430a-a4d1-9ebacfc82760",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "e78d3e0d403c6d6e41bd660f45efbde2e9f25bf3cbd0cfba5d444d3cde07ca15",
+      "tokenId": "728dbd30-51fe-4347-961e-f7d6e2e45eb4",
+      "createdAt": "2026-07-06T05:45:36.762Z",
+      "expiresAt": "2026-07-13T05:45:36.762Z",
+      "revokedAt": "2026-07-06T06:22:15.027Z"
+    },
+    {
+      "id": "d85ca4fb-f51b-4cbd-bf9d-2652bf652e7a",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "280a07ff433c7271e4dadaf1b2f2edaeb291b92fdb1548467ec818a99119652d",
+      "tokenId": "bafda2f2-634a-486c-9c96-4d206dc83f51",
+      "createdAt": "2026-07-06T06:22:18.145Z",
+      "expiresAt": "2026-07-13T06:22:18.145Z",
+      "revokedAt": "2026-07-06T09:10:33.982Z"
+    },
+    {
+      "id": "279cb873-1110-4ab8-a1cd-427b6001b4cb",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "48054d685cf38e7455e54145d527fe595afd1d66399b86bc91b19de9856fd78b",
+      "tokenId": "c6354c90-c83c-45e1-ada4-06e6715c25a8",
+      "createdAt": "2026-07-06T09:10:33.991Z",
+      "expiresAt": "2026-07-13T09:10:33.991Z",
+      "revokedAt": "2026-07-06T09:19:22.312Z"
+    },
+    {
+      "id": "89d41f00-70ec-4ab0-a708-d1a66a04fe2c",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "577c43020d75a6631c28273a9b660afbde6b81f98972e78eaf618ce906441ed1",
+      "tokenId": "b6cbc7fc-e27c-4052-bc60-5b408ae035a4",
+      "createdAt": "2026-07-06T09:20:09.642Z",
+      "expiresAt": "2026-07-13T09:20:09.642Z",
+      "revokedAt": "2026-07-06T10:43:01.384Z"
+    },
+    {
+      "id": "b81f7c45-7aef-4d74-8eb4-1e2c32d444f8",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "1f86f1fdaac5617387e3faf68fb801b5b7fa13ee2809a3ffa15e4492192e1858",
+      "tokenId": "a7f0913d-d9cf-4d97-b855-c9ff1560c290",
+      "createdAt": "2026-07-06T09:24:05.458Z",
+      "expiresAt": "2026-07-13T09:24:05.458Z",
+      "revokedAt": "2026-07-06T09:49:57.886Z"
+    },
+    {
+      "id": "aceb74ef-6a04-4c3d-82c6-27936fce0732",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "d6e59c1f23fe5a362bfea9d21dd2ce4f0882ade5e754a38da292e30aa5989ba8",
+      "tokenId": "ed28c51f-4ebd-44d6-a06e-9ecde3171b9a",
+      "createdAt": "2026-07-06T09:49:57.896Z",
+      "expiresAt": "2026-07-13T09:49:57.896Z",
+      "revokedAt": null
+    },
+    {
+      "id": "1e5eee63-680a-40c9-b4d4-104e1f877e5e",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "dd16852d06a8049b22b769fed6ce132adef0f0811642ebe5b253f60dbd862a05",
+      "tokenId": "fa7bf0b9-fc30-4ade-ba3b-d3847f5a80b0",
+      "createdAt": "2026-07-06T09:50:01.348Z",
+      "expiresAt": "2026-07-13T09:50:01.348Z",
+      "revokedAt": "2026-07-06T10:43:12.835Z"
+    },
+    {
+      "id": "a40e3762-cc98-4b65-966d-5d2606a7ccce",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "ae96fd8f09405239ddac45a86e6a05ddd51d8bcbc230f386d25a7b43f0b9f1af",
+      "tokenId": "f5779b72-2935-4383-8dfc-c3ea7a41703a",
+      "createdAt": "2026-07-06T10:43:01.393Z",
+      "expiresAt": "2026-07-13T10:43:01.393Z",
+      "revokedAt": "2026-07-06T10:43:01.711Z"
+    },
+    {
+      "id": "0adbf823-f358-4a15-afc1-bea1636653e9",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "0dd158d2a72b4d49d1f16f34b3180be248b66b8b4a395c2e01572336385d3648",
+      "tokenId": "cb612d6e-91b6-42d6-b867-4072972486c7",
+      "createdAt": "2026-07-06T10:43:01.715Z",
+      "expiresAt": "2026-07-13T10:43:01.715Z",
+      "revokedAt": "2026-07-06T11:03:25.262Z"
+    },
+    {
+      "id": "bd37757e-7466-4fae-9606-88f749461c02",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "64c457995120b89bcb887b5f5cfcd5ccc4d833b74318a74b35bc8a700fd1a473",
+      "tokenId": "fcfb6476-5943-4331-98b6-39e1da6cba54",
+      "createdAt": "2026-07-06T10:43:12.839Z",
+      "expiresAt": "2026-07-13T10:43:12.839Z",
+      "revokedAt": "2026-07-06T10:43:20.866Z"
+    },
+    {
+      "id": "6f793f7b-da92-43e7-8701-2c2b343617e2",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "7ec9c8f910ef1e97253318a9fc70af9026beff01f7695424803388d9e7293774",
+      "tokenId": "5851a758-802a-40d8-85ca-882dca183543",
+      "createdAt": "2026-07-06T10:43:20.869Z",
+      "expiresAt": "2026-07-13T10:43:20.869Z",
+      "revokedAt": "2026-07-06T10:45:40.878Z"
+    },
+    {
+      "id": "ebbebd28-09c4-4304-acde-3437f02eb1a1",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "5067304c48df17e1cc25355794108dddf34a7f5edb397f75e19821a27f0d5948",
+      "tokenId": "4a3db64a-656e-45e3-b8d1-e0aec6aec4e3",
+      "createdAt": "2026-07-06T10:48:10.011Z",
+      "expiresAt": "2026-07-13T10:48:10.011Z",
+      "revokedAt": "2026-07-06T10:59:25.144Z"
+    },
+    {
+      "id": "19428ac3-c9ff-43b8-9de6-f308e75f3c22",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "58fc51868e2b5b0d1c715506baa1aa883d9e754f6b0021dadb987f505b6d1f5b",
+      "tokenId": "409ed3b6-995e-4789-b9b1-c86dae9c8a3c",
+      "createdAt": "2026-07-06T11:03:25.268Z",
+      "expiresAt": "2026-07-13T11:03:25.268Z",
+      "revokedAt": "2026-07-07T04:05:22.455Z"
+    },
+    {
+      "id": "0eadffbe-f188-4ceb-91e7-4a79353f512c",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "b59909009fc21a6cd4e5dbabd6fc772b37444ca2781893e675c41fdc798f4cc5",
+      "tokenId": "ed1b02c1-70e7-400f-a5f4-df6e4b7b1e33",
+      "createdAt": "2026-07-06T11:06:35.358Z",
+      "expiresAt": "2026-07-13T11:06:35.358Z",
+      "revokedAt": "2026-07-06T12:52:37.008Z"
+    },
+    {
+      "id": "6a3727b1-9874-4aa9-97f0-1de2e0d8c4aa",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "bcf1afaf4e0af94c6d7b1d99feb7e900b5373a952f2e193a66ee67c884dcc766",
+      "tokenId": "7968720b-cc81-47f3-ad90-e083fa4ad47c",
+      "createdAt": "2026-07-06T12:52:37.013Z",
+      "expiresAt": "2026-07-13T12:52:37.013Z",
+      "revokedAt": null
+    },
+    {
+      "id": "cb1a8ceb-60be-4a16-af1d-b50692872b12",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "c8b5bb3d41e818ac0e7dbd08e8b95c5a023cd5d19a7827ba0faf8d7698836607",
+      "tokenId": "a3609bab-d404-4524-a5fa-a2795f88e1c1",
+      "createdAt": "2026-07-06T12:52:53.094Z",
+      "expiresAt": "2026-07-13T12:52:53.094Z",
+      "revokedAt": null
+    },
+    {
+      "id": "88f10c18-a8c9-4475-a288-1898658a32ae",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "258c15cb69d3c5086ed0b08f1bfc448bade6789be1cafe14085a615b43c03314",
+      "tokenId": "40958a07-a164-473e-b594-ef4b34aa3a0b",
+      "createdAt": "2026-07-07T04:05:22.461Z",
+      "expiresAt": "2026-07-14T04:05:22.461Z",
+      "revokedAt": "2026-07-07T04:07:56.934Z"
+    },
+    {
+      "id": "4eda5515-0900-488a-83dd-08f589fa649c",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "c74335da7d3edd5dcb94daae8349d5cd9d9ca688c25c88910d67b1b5b77872c1",
+      "tokenId": "d95ab087-4acd-4290-9410-7d506bef9e8c",
+      "createdAt": "2026-07-07T09:00:59.064Z",
+      "expiresAt": "2026-07-14T09:00:59.064Z",
+      "revokedAt": "2026-07-08T10:32:33.867Z"
+    },
+    {
+      "id": "9963d084-7141-42b1-8014-21532011ce39",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "fbaae2bc8d2f7a1c0a4245bf5ad0cd50eb06dfcfb1faa00901878073ccd569ff",
+      "tokenId": "dcfffef6-99c5-4c94-9f59-4b87c75a30b7",
+      "createdAt": "2026-07-08T10:32:33.876Z",
+      "expiresAt": "2026-07-15T10:32:33.876Z",
+      "revokedAt": null
+    }
+  ],
+  "emailVerificationTokens": [
+    {
+      "id": "066e09bc-7ef5-4462-89c6-4b6d9576219c",
+      "userId": "fcf4cefa-1e84-45cf-a687-e7a8722fe606",
+      "tokenHash": "7dbfa62c7a95022d6ccb084f7110ca82c4ebb712078632d53cb3cade1c8f1ef6",
+      "createdAt": "2026-07-06T05:37:58.180Z",
+      "expiresAt": "2026-07-07T05:37:58.180Z",
+      "usedAt": "2026-07-06T05:38:20.447Z"
+    },
+    {
+      "id": "60f61b39-bc0c-4665-b2d4-f56fc0bdb852",
+      "userId": "28138be3-ac04-4d13-a861-9b7ba5148cc9",
+      "tokenHash": "d65f4849c4c41b4f5a162f973db024b6acbc14f1852f52dea219a2d9285b2787",
+      "createdAt": "2026-07-06T05:39:13.803Z",
+      "expiresAt": "2026-07-07T05:39:13.803Z",
+      "usedAt": null
+    },
+    {
+      "id": "32e3d31c-be30-4d9c-95bf-b1ae1fd20efd",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "846721dc22cdc957334582b3a5a759e284840a2d9e790452ac5d12c10ea3ebd3",
+      "createdAt": "2026-07-06T05:45:27.672Z",
+      "expiresAt": "2026-07-07T05:45:27.672Z",
+      "usedAt": "2026-07-06T05:45:36.759Z"
+    },
+    {
+      "id": "0a35d6a7-ed00-4c96-a224-ed4d3b35baeb",
+      "userId": "1e944cc8-cf32-42f3-b237-d3e8b29cf5f1",
+      "tokenHash": "4b5ffcc7a15ef9d44dc4a3425ad877c9ab5ac5516943917ba12f85d9fb4d8f61",
+      "createdAt": "2026-07-07T06:16:22.783Z",
+      "expiresAt": "2026-07-08T06:16:22.783Z",
+      "usedAt": null
+    },
+    {
+      "id": "a563b546-2cfa-4b6b-9283-0e651fcce518",
+      "userId": "e6d3693a-fab2-486c-895b-77b7e3056c14",
+      "tokenHash": "9d2f65df3285918de92448c01c19d3e5b38e7f072604819c20e2e01b9c5363da",
+      "createdAt": "2026-07-07T06:19:59.104Z",
+      "expiresAt": "2026-07-08T06:19:59.104Z",
+      "usedAt": null
+    }
+  ],
+  "passwordResetTokens": [
+    {
+      "id": "9005746e-2c81-4a04-a269-9df4385055a3",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "089e650b3b2896129ff70bd5001990fa2dbea3dc691104b5806181659ff2391a",
+      "createdAt": "2026-07-06T06:21:49.685Z",
+      "expiresAt": "2026-07-06T07:21:49.685Z",
+      "usedAt": "2026-07-06T06:22:15.026Z"
+    },
+    {
+      "id": "a6d9963f-bc20-47cd-987a-108d982c03e7",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "70b7a89194acc7565858bd96ef19aa47a5fb2b3b80924dba586313ee9b473519",
+      "createdAt": "2026-07-07T04:07:27.774Z",
+      "expiresAt": "2026-07-07T05:07:27.774Z",
+      "usedAt": null
+    },
+    {
+      "id": "23031852-a006-4f22-aa09-47f7f1eb161b",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "91126889cbd7d9b8662bed8526d3dfad0a2787b8a3733fc432051a0d60a926d2",
+      "createdAt": "2026-07-07T04:08:11.047Z",
+      "expiresAt": "2026-07-07T05:08:11.047Z",
+      "usedAt": null
+    },
+    {
+      "id": "38836d5e-2aff-4609-8d01-f6e5d90f19e4",
+      "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "tokenHash": "7c1245a9e4c6e9f4db88f47e0b4b53d244e860d6d6715c17153c9843ffa138dc",
+      "createdAt": "2026-07-07T06:12:45.609Z",
+      "expiresAt": "2026-07-07T07:12:45.609Z",
+      "usedAt": null
+    },
+    {
+      "id": "622009f1-ae7f-42c7-8143-c2463f506305",
+      "userId": "fcf4cefa-1e84-45cf-a687-e7a8722fe606",
+      "tokenHash": "1fc3d328d81211770d2c26cb0ba47c00270f81aa2601098e723cc4305712339a",
+      "createdAt": "2026-07-07T06:13:39.427Z",
+      "expiresAt": "2026-07-07T07:13:39.427Z",
+      "usedAt": null
+    },
+    {
+      "id": "922d33d0-50c6-4239-bfd9-b64a1f5a4a45",
+      "userId": "fcf4cefa-1e84-45cf-a687-e7a8722fe606",
+      "tokenHash": "0cbf0cafa151fafba76ab4c1855e2337ec5f658bd2ec38bbe0c385f3ff61a017",
+      "createdAt": "2026-07-07T06:15:39.163Z",
+      "expiresAt": "2026-07-07T07:15:39.163Z",
+      "usedAt": null
+    },
+    {
+      "id": "ffb7ae01-98dd-4954-84fd-c60d8d359c59",
+      "userId": "e6d3693a-fab2-486c-895b-77b7e3056c14",
+      "tokenHash": "c5dff04a5808330423238c1b73e69e9e4224cd39c6cdfcf0717d19a7bff5c834",
+      "createdAt": "2026-07-07T06:46:33.263Z",
+      "expiresAt": "2026-07-07T07:46:33.263Z",
+      "usedAt": null
+    }
+  ],
+  "rooms": [
+    {
+      "id": "1450A278",
+      "ownerId": null,
+      "players": {
+        "white": {
+          "socketId": "mCANFRBELTv9D7nFAAAD",
+          "userId": null,
+          "name": "user1",
+          "color": "white",
+          "connected": false,
+          "isGuest": true
+        },
+        "black": null
+      },
+      "status": "waiting",
+      "result": null,
+      "moveCount": 0,
+      "createdAt": "2026-07-03T07:29:18.523Z",
+      "updatedAt": "2026-07-03T07:29:18.532Z"
+    },
+    {
+      "id": "DF410A47",
+      "ownerId": null,
+      "players": {
+        "white": {
+          "socketId": "6NpX183DwDg7e2v7AAAB",
+          "userId": null,
+          "name": "user1",
+          "color": "white",
+          "connected": false,
+          "isGuest": true
+        },
+        "black": null
+      },
+      "status": "waiting",
+      "result": null,
+      "moveCount": 0,
+      "createdAt": "2026-07-03T07:33:10.709Z",
+      "updatedAt": "2026-07-03T07:33:10.719Z"
+    },
+    {
+      "id": "2E8C5E37",
+      "ownerId": null,
+      "players": {
+        "white": {
+          "socketId": "nS365vggVyPwLiSyAAAH",
+          "userId": null,
+          "name": "user1",
+          "color": "white",
+          "connected": false,
+          "isGuest": true
+        },
+        "black": null
+      },
+      "status": "waiting",
+      "result": null,
+      "moveCount": 0,
+      "createdAt": "2026-07-06T04:31:02.614Z",
+      "updatedAt": "2026-07-06T04:31:02.625Z"
+    },
+    {
+      "id": "962F7AB8",
+      "ownerId": null,
+      "players": {
+        "white": {
+          "socketId": "N1zbN3bb3E6rZ8MGAAAK",
+          "userId": null,
+          "name": "user1",
+          "color": "white",
+          "connected": false,
+          "isGuest": true
+        },
+        "black": null
+      },
+      "status": "waiting",
+      "result": null,
+      "moveCount": 0,
+      "createdAt": "2026-07-06T04:43:53.550Z",
+      "updatedAt": "2026-07-06T05:07:36.804Z",
+      "moveHistory": [],
+      "capturedPieces": {
+        "white": [],
+        "black": []
+      },
+      "timers": {
+        "white": 600,
+        "black": 600
+      }
+    },
+    {
+      "id": "D4EEF7BF",
+      "ownerId": null,
+      "players": {
+        "white": {
+          "socketId": "ZfU7OGLwAX7yM3i9AAAH",
+          "userId": null,
+          "name": "User1",
+          "color": "white",
+          "connected": false,
+          "isGuest": true
+        },
+        "black": {
+          "socketId": "Rzdt7rNer-idbOEEAAAX",
+          "userId": null,
+          "name": "User2",
+          "color": "black",
+          "connected": false,
+          "isGuest": true
+        }
+      },
+      "status": "active",
+      "result": null,
+      "moveHistory": [
+        {
+          "san": "c4",
+          "from": "c2",
+          "to": "c4",
+          "piece": "p",
+          "color": "w",
+          "captured": null,
+          "flags": "b",
+          "fen": "rnbqkbnr/pppppppp/8/8/2P5/8/PP1PPPPP/RNBQKBNR b KQkq - 0 1",
+          "moveNumber": 1
+        },
+        {
+          "san": "f5",
+          "from": "f7",
+          "to": "f5",
+          "piece": "p",
+          "color": "b",
+          "captured": null,
+          "flags": "b",
+          "fen": "rnbqkbnr/ppppp1pp/8/5p2/2P5/8/PP1PPPPP/RNBQKBNR w KQkq - 0 2",
+          "moveNumber": 2
+        },
+        {
+          "san": "Qa4",
+          "from": "d1",
+          "to": "a4",
+          "piece": "q",
+          "color": "w",
+          "captured": null,
+          "flags": "n",
+          "fen": "rnbqkbnr/ppppp1pp/8/5p2/Q1P5/8/PP1PPPPP/RNB1KBNR b KQkq - 1 2",
+          "moveNumber": 2
+        }
+      ],
+      "capturedPieces": {
+        "white": [],
+        "black": []
+      },
+      "timers": {
+        "white": 545,
+        "black": 385
+      },
+      "createdAt": "2026-07-06T05:07:55.426Z",
+      "updatedAt": "2026-07-06T05:12:49.161Z"
+    },
+    {
+      "id": "ABFFC718",
+      "ownerId": null,
+      "players": {
+        "white": {
+          "socketId": "5eZsf8lEkwR58IdcAAAF",
+          "userId": null,
+          "name": "user1",
+          "color": "white",
+          "connected": false,
+          "isGuest": true
+        },
+        "black": {
+          "socketId": "0caj5LARS3nEXSv1AAAb",
+          "userId": null,
+          "name": "user2",
+          "color": "black",
+          "connected": false,
+          "isGuest": true
+        }
+      },
+      "status": "finished",
+      "result": {
+        "winner": "black",
+        "reason": "resignation"
+      },
+      "moveHistory": [
+        {
+          "san": "d3",
+          "from": "d2",
+          "to": "d3",
+          "piece": "p",
+          "color": "w",
+          "captured": null,
+          "flags": "n",
+          "fen": "rnbqkbnr/pppppppp/8/8/8/3P4/PPP1PPPP/RNBQKBNR b KQkq - 0 1",
+          "moveNumber": 1
+        },
+        {
+          "san": "e6",
+          "from": "e7",
+          "to": "e6",
+          "piece": "p",
+          "color": "b",
+          "captured": null,
+          "flags": "n",
+          "fen": "rnbqkbnr/pppp1ppp/4p3/8/8/3P4/PPP1PPPP/RNBQKBNR w KQkq - 0 2",
+          "moveNumber": 2
+        },
+        {
+          "san": "c4",
+          "from": "c2",
+          "to": "c4",
+          "piece": "p",
+          "color": "w",
+          "captured": null,
+          "flags": "b",
+          "fen": "rnbqkbnr/pppp1ppp/4p3/8/2P5/3P4/PP2PPPP/RNBQKBNR b KQkq - 0 2",
+          "moveNumber": 2
+        },
+        {
+          "san": "f5",
+          "from": "f7",
+          "to": "f5",
+          "piece": "p",
+          "color": "b",
+          "captured": null,
+          "flags": "b",
+          "fen": "rnbqkbnr/pppp2pp/4p3/5p2/2P5/3P4/PP2PPPP/RNBQKBNR w KQkq - 0 3",
+          "moveNumber": 3
+        },
+        {
+          "san": "Qa4",
+          "from": "d1",
+          "to": "a4",
+          "piece": "q",
+          "color": "w",
+          "captured": null,
+          "flags": "n",
+          "fen": "rnbqkbnr/pppp2pp/4p3/5p2/Q1P5/3P4/PP2PPPP/RNB1KBNR b KQkq - 1 3",
+          "moveNumber": 3
+        },
+        {
+          "san": "Qh4",
+          "from": "d8",
+          "to": "h4",
+          "piece": "q",
+          "color": "b",
+          "captured": null,
+          "flags": "n",
+          "fen": "rnb1kbnr/pppp2pp/4p3/5p2/Q1P4q/3P4/PP2PPPP/RNB1KBNR w KQkq - 2 4",
+          "moveNumber": 4
+        },
+        {
+          "san": "Qxd7+",
+          "from": "a4",
+          "to": "d7",
+          "piece": "q",
+          "color": "w",
+          "captured": "p",
+          "flags": "c",
+          "fen": "rnb1kbnr/pppQ2pp/4p3/5p2/2P4q/3P4/PP2PPPP/RNB1KBNR b KQkq - 0 4",
+          "moveNumber": 4
+        },
+        {
+          "san": "Kxd7",
+          "from": "e8",
+          "to": "d7",
+          "piece": "k",
+          "color": "b",
+          "captured": "q",
+          "flags": "c",
+          "fen": "rnb2bnr/pppk2pp/4p3/5p2/2P4q/3P4/PP2PPPP/RNB1KBNR w KQ - 0 5",
+          "moveNumber": 5
+        },
+        {
+          "san": "Nc3",
+          "from": "b1",
+          "to": "c3",
+          "piece": "n",
+          "color": "w",
+          "captured": null,
+          "flags": "n",
+          "fen": "rnb2bnr/pppk2pp/4p3/5p2/2P4q/2NP4/PP2PPPP/R1B1KBNR b KQ - 1 5",
+          "moveNumber": 5
+        },
+        {
+          "san": "Nf6",
+          "from": "g8",
+          "to": "f6",
+          "piece": "n",
+          "color": "b",
+          "captured": null,
+          "flags": "n",
+          "fen": "rnb2b1r/pppk2pp/4pn2/5p2/2P4q/2NP4/PP2PPPP/R1B1KBNR w KQ - 2 6",
+          "moveNumber": 6
+        },
+        {
+          "san": "Nb5",
+          "from": "c3",
+          "to": "b5",
+          "piece": "n",
+          "color": "w",
+          "captured": null,
+          "flags": "n",
+          "fen": "rnb2b1r/pppk2pp/4pn2/1N3p2/2P4q/3P4/PP2PPPP/R1B1KBNR b KQ - 3 6",
+          "moveNumber": 6
+        },
+        {
+          "san": "Ng4",
+          "from": "f6",
+          "to": "g4",
+          "piece": "n",
+          "color": "b",
+          "captured": null,
+          "flags": "n",
+          "fen": "rnb2b1r/pppk2pp/4p3/1N3p2/2P3nq/3P4/PP2PPPP/R1B1KBNR w KQ - 4 7",
+          "moveNumber": 7
+        },
+        {
+          "san": "Nxc7",
+          "from": "b5",
+          "to": "c7",
+          "piece": "n",
+          "color": "w",
+          "captured": "p",
+          "flags": "c",
+          "fen": "rnb2b1r/ppNk2pp/4p3/5p2/2P3nq/3P4/PP2PPPP/R1B1KBNR b KQ - 0 7",
+          "moveNumber": 7
+        },
+        {
+          "san": "Nxf2",
+          "from": "g4",
+          "to": "f2",
+          "piece": "n",
+          "color": "b",
+          "captured": "p",
+          "flags": "c",
+          "fen": "rnb2b1r/ppNk2pp/4p3/5p2/2P4q/3P4/PP2PnPP/R1B1KBNR w KQ - 0 8",
+          "moveNumber": 8
+        },
+        {
+          "san": "Nxe6",
+          "from": "c7",
+          "to": "e6",
+          "piece": "n",
+          "color": "w",
+          "captured": "p",
+          "flags": "c",
+          "fen": "rnb2b1r/pp1k2pp/4N3/5p2/2P4q/3P4/PP2PnPP/R1B1KBNR b KQ - 0 8",
+          "moveNumber": 8
+        },
+        {
+          "san": "Nxh1+",
+          "from": "f2",
+          "to": "h1",
+          "piece": "n",
+          "color": "b",
+          "captured": "r",
+          "flags": "c",
+          "fen": "rnb2b1r/pp1k2pp/4N3/5p2/2P4q/3P4/PP2P1PP/R1B1KBNn w Q - 0 9",
+          "moveNumber": 9
+        },
+        {
+          "san": "Kd2",
+          "from": "e1",
+          "to": "d2",
+          "piece": "k",
+          "color": "w",
+          "captured": null,
+          "flags": "n",
+          "fen": "rnb2b1r/pp1k2pp/4N3/5p2/2P4q/3P4/PP1KP1PP/R1B2BNn b - - 1 9",
+          "moveNumber": 9
+        },
+        {
+          "san": "Kxe6",
+          "from": "d7",
+          "to": "e6",
+          "piece": "k",
+          "color": "b",
+          "captured": "n",
+          "flags": "c",
+          "fen": "rnb2b1r/pp4pp/4k3/5p2/2P4q/3P4/PP1KP1PP/R1B2BNn w - - 0 10",
+          "moveNumber": 10
+        },
+        {
+          "san": "g3",
+          "from": "g2",
+          "to": "g3",
+          "piece": "p",
+          "color": "w",
+          "captured": null,
+          "flags": "n",
+          "fen": "rnb2b1r/pp4pp/4k3/5p2/2P4q/3P2P1/PP1KP2P/R1B2BNn b - - 0 10",
+          "moveNumber": 10
+        },
+        {
+          "san": "Be7",
+          "from": "f8",
+          "to": "e7",
+          "piece": "b",
+          "color": "b",
+          "captured": null,
+          "flags": "n",
+          "fen": "rnb4r/pp2b1pp/4k3/5p2/2P4q/3P2P1/PP1KP2P/R1B2BNn w - - 1 11",
+          "moveNumber": 11
+        },
+        {
+          "san": "gxh4",
+          "from": "g3",
+          "to": "h4",
+          "piece": "p",
+          "color": "w",
+          "captured": "q",
+          "flags": "c",
+          "fen": "rnb4r/pp2b1pp/4k3/5p2/2P4P/3P4/PP1KP2P/R1B2BNn b - - 0 11",
+          "moveNumber": 11
+        }
+      ],
+      "capturedPieces": {
+        "white": [
+          "p",
+          "p",
+          "p",
+          "q"
+        ],
+        "black": [
+          "q",
+          "p",
+          "r",
+          "n"
+        ]
+      },
+      "timers": {
+        "white": 410,
+        "black": 466
+      },
+      "createdAt": "2026-07-06T05:14:34.688Z",
+      "updatedAt": "2026-07-06T05:30:06.012Z"
+    },
+    {
+      "id": "94AEBCD1",
+      "ownerId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+      "players": {
+        "white": {
+          "socketId": "-N9lw70VqDVrj3gQAAAT",
+          "userId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+          "name": "user",
+          "color": "white",
+          "connected": true,
+          "isGuest": false
+        },
+        "black": {
+          "socketId": "yJQRWkcG1shelidXAAAN",
+          "userId": "fcf4cefa-1e84-45cf-a687-e7a8722fe606",
+          "name": "kritika",
+          "color": "black",
+          "connected": false,
+          "isGuest": false
+        }
+      },
+      "status": "finished",
+      "result": {
+        "winner": "white",
+        "reason": "timeout"
+      },
+      "moveHistory": [
+        {
+          "san": "d4",
+          "from": "d2",
+          "to": "d4",
+          "piece": "p",
+          "color": "w",
+          "captured": null,
+          "flags": "b",
+          "fen": "rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq - 0 1",
+          "moveNumber": 1
+        },
+        {
+          "san": "e5",
+          "from": "e7",
+          "to": "e5",
+          "piece": "p",
+          "color": "b",
+          "captured": null,
+          "flags": "b",
+          "fen": "rnbqkbnr/pppp1ppp/8/4p3/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2",
+          "moveNumber": 2
+        },
+        {
+          "san": "Qd3",
+          "from": "d1",
+          "to": "d3",
+          "piece": "q",
+          "color": "w",
+          "captured": null,
+          "flags": "n",
+          "fen": "rnbqkbnr/pppp1ppp/8/4p3/3P4/3Q4/PPP1PPPP/RNB1KBNR b KQkq - 1 2",
+          "moveNumber": 2
+        },
+        {
+          "san": "Qh4",
+          "from": "d8",
+          "to": "h4",
+          "piece": "q",
+          "color": "b",
+          "captured": null,
+          "flags": "n",
+          "fen": "rnb1kbnr/pppp1ppp/8/4p3/3P3q/3Q4/PPP1PPPP/RNB1KBNR w KQkq - 2 3",
+          "moveNumber": 3
+        },
+        {
+          "san": "Qxh7",
+          "from": "d3",
+          "to": "h7",
+          "piece": "q",
+          "color": "w",
+          "captured": "p",
+          "flags": "c",
+          "fen": "rnb1kbnr/pppp1ppQ/8/4p3/3P3q/8/PPP1PPPP/RNB1KBNR b KQkq - 0 3",
+          "moveNumber": 3
+        },
+        {
+          "san": "Rxh7",
+          "from": "h8",
+          "to": "h7",
+          "piece": "r",
+          "color": "b",
+          "captured": "q",
+          "flags": "c",
+          "fen": "rnb1kbn1/pppp1ppr/8/4p3/3P3q/8/PPP1PPPP/RNB1KBNR w KQq - 0 4",
+          "moveNumber": 4
+        },
+        {
+          "san": "h3",
+          "from": "h2",
+          "to": "h3",
+          "piece": "p",
+          "color": "w",
+          "captured": null,
+          "flags": "n",
+          "fen": "rnb1kbn1/pppp1ppr/8/4p3/3P3q/7P/PPP1PPP1/RNB1KBNR b KQq - 0 4",
+          "moveNumber": 4
+        },
+        {
+          "san": "Qxh3",
+          "from": "h4",
+          "to": "h3",
+          "piece": "q",
+          "color": "b",
+          "captured": "p",
+          "flags": "c",
+          "fen": "rnb1kbn1/pppp1ppr/8/4p3/3P4/7q/PPP1PPP1/RNB1KBNR w KQq - 0 5",
+          "moveNumber": 5
+        },
+        {
+          "san": "Rxh3",
+          "from": "h1",
+          "to": "h3",
+          "piece": "r",
+          "color": "w",
+          "captured": "q",
+          "flags": "c",
+          "fen": "rnb1kbn1/pppp1ppr/8/4p3/3P4/7R/PPP1PPP1/RNB1KBN1 b Qq - 0 5",
+          "moveNumber": 5
+        },
+        {
+          "san": "Rxh3",
+          "from": "h7",
+          "to": "h3",
+          "piece": "r",
+          "color": "b",
+          "captured": "r",
+          "flags": "c",
+          "fen": "rnb1kbn1/pppp1pp1/8/4p3/3P4/7r/PPP1PPP1/RNB1KBN1 w Qq - 0 6",
+          "moveNumber": 6
+        },
+        {
+          "san": "Nxh3",
+          "from": "g1",
+          "to": "h3",
+          "piece": "n",
+          "color": "w",
+          "captured": "r",
+          "flags": "c",
+          "fen": "rnb1kbn1/pppp1pp1/8/4p3/3P4/7N/PPP1PPP1/RNB1KB2 b Qq - 0 6",
+          "moveNumber": 6
+        }
+      ],
+      "capturedPieces": {
+        "white": [
+          "p",
+          "q",
+          "r"
+        ],
+        "black": [
+          "q",
+          "p",
+          "r"
+        ]
+      },
+      "timers": {
+        "white": 550,
+        "black": 0
+      },
+      "createdAt": "2026-07-06T05:45:56.233Z",
+      "updatedAt": "2026-07-06T06:22:18.184Z"
+    }
+  ],
+  "invites": [],
+  "statistics": [
+    {
+      "roomId": "ABFFC718",
+      "result": {
+        "winner": "black",
+        "reason": "resignation"
+      },
+      "players": {
+        "whiteUserId": null,
+        "blackUserId": null
+      },
+      "recordedAt": "2026-07-06T05:20:11.752Z"
+    },
+    {
+      "roomId": "94AEBCD1",
+      "result": {
+        "winner": "white",
+        "reason": "timeout"
+      },
+      "players": {
+        "whiteUserId": "f569a14b-13d5-40a3-bef2-d9a29466c8b8",
+        "blackUserId": "fcf4cefa-1e84-45cf-a687-e7a8722fe606"
+      },
+      "recordedAt": "2026-07-06T05:57:01.736Z"
+    }
+  ]
+}
