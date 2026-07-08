@@ -22,7 +22,7 @@ export default function MoveHistory({ moves }) {
 
   return (
     <div className="move-history">
-      <div className="panel-title">Move History</div>
+<div className="panel-title">Game Moves</div>
       <div className="move-list">
         {pairs.length === 0 && (
           <div className="move-empty">No moves yet</div>
