@@ -37,10 +37,6 @@ function validateEmail(email) {
 
 function validatePassword(password, field = 'Password') {
   const value = requireString(password, field, { min: 8, max: 128 });
-  if (!/[A-Za-z]/.test(value) || !/[0-9]/.test(value)) {
-    throw new AppError(`${field} must include at least one letter and one number`);
-  }
-
   return value;
 }
 

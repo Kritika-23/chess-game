@@ -77,6 +77,10 @@ class UserRepository {
     return this.emailVerificationTokens().find((record) => record.tokenHash === tokenHash && !record.usedAt) || null;
   }
 
+  findAnyEmailVerificationToken(tokenHash) {
+    return this.emailVerificationTokens().find((record) => record.tokenHash === tokenHash) || null;
+  }
+
   markEmailVerificationTokenUsed(tokenHash) {
     const record = this.findEmailVerificationToken(tokenHash);
     if (record) {

@@ -535,6 +535,34 @@ input { font-family: inherit; }
 }
 .form-input:focus { outline: none; border-color: var(--brass); }
 .form-input::placeholder { color: var(--text-tertiary); }
+.password-input-wrap {
+  position: relative;
+}
+.password-input {
+  padding-right: 46px;
+}
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  transform: translateY(-50%);
+  border-radius: 8px;
+  color: var(--text-tertiary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+.password-toggle:hover {
+  color: var(--text-primary);
+  background: var(--border-subtle);
+}
+.password-toggle:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+}
 .room-code-input { text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
 
 .form-error {

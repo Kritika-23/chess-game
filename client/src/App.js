@@ -20,7 +20,7 @@ import SkeletonLoader from "./components/SkeletonLoader";
 import "./styles/App.css";
 
 function AppShell() {
-  const { state } = useGame();
+  const { state, notify } = useGame();
   const { user, loading, logout } = useAuth();
   const { soundEnabled, toggleSound } = useSound();
   const socket = useSocket();
@@ -49,18 +49,35 @@ function AppShell() {
   };
 
   useEffect(() => {
-    if (user) {
+    if (user && !["verify", "reset"].includes(authMode)) {
       setCurrentPage(pendingPage || "home");
       setAuthMode(null);
       setAuthToken("");
       setPendingPage(null);
     }
-  }, [user, pendingPage]);
+  }, [user, pendingPage, authMode]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token") || "";
     const path = window.location.pathname;
+    const emailVerified = params.get("emailVerified");
+    const emailVerificationError = params.get("emailVerificationError");
+
+    if (emailVerified) {
+      notify("success", "Email verified successfully.", 4000);
+      if (user) setCurrentPage("profile");
+      else setAuthMode("login");
+      window.history.replaceState({}, document.title, "/");
+      return;
+    }
+
+    if (emailVerificationError) {
+      notify("error", "Verification link is invalid or expired. Please send a new verification email.", 6000);
+      if (!user) setAuthMode("login");
+      window.history.replaceState({}, document.title, "/");
+      return;
+    }
 
     if (!token) return;
 
@@ -75,7 +92,7 @@ function AppShell() {
     }
 
     window.history.replaceState({}, document.title, "/");
-  }, []);
+  }, [notify, user]);
 
   const showLogin = () => setAuthMode("login");
   const showSignUp = () => setAuthMode("register");
@@ -94,6 +111,45 @@ function AppShell() {
   // Loading screen
   if (loading) {
     return <SkeletonLoader variant="home" />;
+  }
+
+  if (["verify", "reset"].includes(authMode)) {
+    return (
+      <div className="app-root">
+        <Navbar
+          currentPage="home"
+          setCurrentPage={goPublicHome}
+          toggleTheme={toggleTheme}
+          onLogin={showLogin}
+          onSignUp={showSignUp}
+          user={user}
+          logout={handleLogout}
+          soundEnabled={soundEnabled}
+          toggleSound={toggleSound}
+        />
+
+        <AuthPage
+          initialMode={authMode}
+          initialToken={authToken}
+          onAuthSuccess={() => {
+            setCurrentPage(pendingPage || "home");
+            setPendingPage(null);
+            setAuthMode(null);
+            setAuthToken("");
+          }}
+          onEmailVerified={() => {
+            if (user) {
+              setCurrentPage("profile");
+              setAuthMode(null);
+              setAuthToken("");
+            } else {
+              setAuthMode("login");
+              setAuthToken("");
+            }
+          }}
+        />
+      </div>
+    );
   }
 
   if (!user) {
@@ -118,6 +174,10 @@ function AppShell() {
               setCurrentPage(pendingPage || "home");
               setPendingPage(null);
               setAuthMode(null);
+              setAuthToken("");
+            }}
+            onEmailVerified={() => {
+              setAuthMode("login");
               setAuthToken("");
             }}
           />

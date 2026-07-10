@@ -37,10 +37,10 @@ export function AuthProvider({ children }) {
     return data;
   }, []);
 
-  const register = useCallback(async ({ name, email, password }) => {
+  const register = useCallback(async ({ name, email, password, confirmPassword }) => {
     return readJsonResponse(await apiFetch('/api/auth/register', {
       method: 'POST',
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify({ name, email, password, confirmPassword }),
     }));
   }, []);
        
@@ -49,8 +49,16 @@ export function AuthProvider({ children }) {
       method: 'POST',
       body: JSON.stringify({ token }),
     }));
-    setUser(data.user);
+    if (user) {
+      await loadProfile();
+    }
     return data;
+  }, [loadProfile, user]);
+
+  const requestEmailVerification = useCallback(async () => {
+    return readJsonResponse(await apiFetch('/api/users/me/email/verification', {
+      method: 'POST',
+    }));
   }, []);
 
   const requestPasswordReset = useCallback(async (email) => {
@@ -60,11 +68,11 @@ export function AuthProvider({ children }) {
     }));
   }, []);
 
-  const resetPassword = useCallback(async ({ token, password }) => {
-    await apiFetch('/api/auth/password/reset', {
+  const resetPassword = useCallback(async ({ token, password, confirmPassword }) => {
+    return readJsonResponse(await apiFetch('/api/auth/password/reset', {
       method: 'POST',
-      body: JSON.stringify({ token, password }),
-    });
+      body: JSON.stringify({ token, password, confirmPassword }),
+    }));
   }, []);
 
 const updateProfile = useCallback(async (profileData) => {
@@ -77,6 +85,18 @@ const updateProfile = useCallback(async (profileData) => {
 
   setUser(data.user);
 
+  return data.user;
+}, []);
+
+const uploadAvatar = useCallback(async (image) => {
+  const data = await readJsonResponse(
+    await apiFetch("/api/users/me/avatar", {
+      method: "POST",
+      body: JSON.stringify({ image }),
+    })
+  );
+
+  setUser(data.user);
   return data.user;
 }, []);
 
@@ -94,11 +114,13 @@ const updateProfile = useCallback(async (profileData) => {
     login,
     register,
     verifyEmail,
+    requestEmailVerification,
     requestPasswordReset,
     resetPassword,
     updateProfile,
+    uploadAvatar,
     logout,
-  }), [user, loading, login, register, verifyEmail, requestPasswordReset, resetPassword, updateProfile, logout]);
+  }), [user, loading, login, register, verifyEmail, requestEmailVerification, requestPasswordReset, resetPassword, updateProfile, uploadAvatar, logout]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

@@ -8,6 +8,24 @@ const logger = require('../../utils/logger');
 const { getCollection, saveDatabase } = require('../../config/database');
 const userRepository = require('../auth/user.repository');
 
+const DEFAULT_RATING = 1200;
+const ELO_K_FACTOR = 32;
+
+function expectedScore(playerRating, opponentRating) {
+  return 1 / (1 + 10 ** ((opponentRating - playerRating) / 400));
+}
+
+function getResultScore(result, color) {
+  if (!result.winner) return 0.5;
+  return result.winner === color ? 1 : 0;
+}
+
+function calculateEloRating(currentRating, opponentRating, actualScore) {
+  const rating = Number.isFinite(currentRating) ? currentRating : DEFAULT_RATING;
+  const opponent = Number.isFinite(opponentRating) ? opponentRating : DEFAULT_RATING;
+  return Math.max(100, Math.round(rating + ELO_K_FACTOR * (actualScore - expectedScore(rating, opponent))));
+}
+
 class GameService {
   constructor() {
     this.publisher = {
@@ -267,12 +285,18 @@ class GameService {
   recordGameResult(room) {
     if (!room || !room.result || room.statsRecorded) return;
 
-    const players = [room.players.white, room.players.black].filter((player) => player?.userId);
-    players.forEach((player) => {
-      const user = userRepository.findById(player.userId);
-      if (!user) return;
+    const playerEntries = [room.players.white, room.players.black]
+      .filter((player) => player?.userId)
+      .map((player) => ({
+        player,
+        user: userRepository.findById(player.userId),
+      }))
+      .filter((entry) => entry.user);
 
-      const stats = user.stats || { gamesPlayed: 0, wins: 0, losses: 0, draws: 0 };
+    const ratingUpdates = this.calculateRatingUpdates(playerEntries, room.result);
+
+    playerEntries.forEach(({ player, user }) => {
+      const stats = { gamesPlayed: 0, wins: 0, losses: 0, draws: 0, ...(user.stats || {}) };
       stats.gamesPlayed += 1;
 
       if (!room.result.winner) {
@@ -283,7 +307,12 @@ class GameService {
         stats.losses += 1;
       }
 
-      userRepository.update(user.id, { stats });
+      const updates = { stats };
+      if (ratingUpdates.has(user.id)) {
+        updates.rating = ratingUpdates.get(user.id);
+      }
+
+      userRepository.update(user.id, updates);
     });
 
     const statistics = getCollection('statistics');
@@ -299,6 +328,26 @@ class GameService {
 
     room.statsRecorded = true;
     saveDatabase();
+  }
+
+  calculateRatingUpdates(playerEntries, result) {
+    const ratingUpdates = new Map();
+    if (playerEntries.length !== 2) return ratingUpdates;
+
+    const [firstEntry, secondEntry] = playerEntries;
+    const firstRating = firstEntry.user.rating || DEFAULT_RATING;
+    const secondRating = secondEntry.user.rating || DEFAULT_RATING;
+
+    ratingUpdates.set(
+      firstEntry.user.id,
+      calculateEloRating(firstRating, secondRating, getResultScore(result, firstEntry.player.color))
+    );
+    ratingUpdates.set(
+      secondEntry.user.id,
+      calculateEloRating(secondRating, firstRating, getResultScore(result, secondEntry.player.color))
+    );
+
+    return ratingUpdates;
   }
 }
 

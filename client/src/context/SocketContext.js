@@ -15,6 +15,7 @@ export function SocketProvider({ children }) {
     socketRef.current = io(SERVER_URL, {
       autoConnect: true,
       withCredentials: true,
+      transports: ['websocket', 'polling'],
       reconnection: true,
       reconnectionDelay: 1000,
       reconnectionAttempts: 10,

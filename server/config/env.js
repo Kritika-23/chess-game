@@ -23,13 +23,23 @@ function loadEnvFile() {
 
 loadEnvFile();
 
+function parseList(value, fallback = []) {
+  if (!value) return fallback;
+  return value
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
 module.exports = {
-  port: Number(process.env.PORT) || 3000,
+  port: Number(process.env.PORT) || 3001,
+  backendUrl: process.env.BACKEND_URL || `http://localhost:${Number(process.env.PORT) || 3001}`,
+  corsOrigins: parseList(process.env.CORS_ORIGINS || process.env.CORS_ORIGIN, ['http://localhost:3000']),
   corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:3000',
   frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3000',
   nodeEnv: process.env.NODE_ENV || 'development',
   databaseUrl: process.env.DATABASE_URL || null,
-  smtpHost: process.env.SMTP_HOST || '',
+  smtpHost: process.env.SMTP_HOST || (process.env.SMTP_USER ? 'smtp.gmail.com' : ''),
   smtpPort: Number(process.env.SMTP_PORT) || 587,
   smtpSecure: process.env.SMTP_SECURE === 'true',
   smtpUser: process.env.SMTP_USER || '',

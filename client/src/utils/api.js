@@ -1,4 +1,8 @@
-const SERVER_URL = process.env.REACT_APP_SERVER_URL || 'http://localhost:3001';
+const apiHost = typeof window !== 'undefined' && window.location.hostname
+  ? window.location.hostname
+  : 'localhost';
+const SERVER_URL = process.env.REACT_APP_SERVER_URL || `http://${apiHost}:3001`;
+let cachedCsrfToken = '';
 
 function getCookie(name) {
   return document.cookie
@@ -12,17 +16,23 @@ function getCookie(name) {
 
 export async function ensureCsrfToken() {
   const existing = getCookie('csrfToken');
-  if (existing) return decodeURIComponent(existing);
+  if (existing) {
+    cachedCsrfToken = decodeURIComponent(existing);
+    return cachedCsrfToken;
+  }
+
+  if (cachedCsrfToken) return cachedCsrfToken;
 
   const response = await fetch(`${SERVER_URL}/api/auth/csrf`, {
     credentials: 'include',
   });
-  const data = await response.json();
+  const data = await parseJsonResponse(response);
   if (!response.ok) {
     throw new Error(data.error || 'Unable to initialize security token');
   }
 
-  return data.csrfToken;
+  cachedCsrfToken = data.csrfToken;
+  return cachedCsrfToken;
 }
 
 export async function apiFetch(path, options = {}) {
@@ -45,11 +55,22 @@ export async function apiFetch(path, options = {}) {
   });
 }
 
+async function parseJsonResponse(response) {
+  const text = await response.text();
+  if (!text) return {};
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    return {};
+  }
+}
+
 export async function readJsonResponse(response) {
   if (response.status === 204) return null;
-  const data = await response.json();
+  const data = await parseJsonResponse(response);
   if (!response.ok) {
-    throw new Error(data.error || 'Request failed');
+    throw new Error(data.error || `Request failed with status ${response.status}`);
   }
   return data;
 }

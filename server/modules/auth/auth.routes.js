@@ -14,10 +14,13 @@ router.post('/auth/login', strictAuthLimiter, asyncHandler(authController.login)
 router.post('/auth/refresh', authLimiter, asyncHandler(authController.refresh));
 router.post('/auth/logout', requireAuth, asyncHandler(authController.logout));
 router.post('/auth/email/verification', strictAuthLimiter, asyncHandler(authController.requestEmailVerification));
+router.get('/auth/email/verify', authLimiter, asyncHandler(authController.verifyEmailRedirect));
 router.post('/auth/email/verify', authLimiter, asyncHandler(authController.verifyEmail));
 router.post('/auth/password/forgot', strictAuthLimiter, asyncHandler(authController.requestPasswordReset));
 router.post('/auth/password/reset', strictAuthLimiter, asyncHandler(authController.resetPassword));
 router.get('/users/me', requireAuth, asyncHandler(authController.getProfile));
+router.post('/users/me/email/verification', requireAuth, strictAuthLimiter, asyncHandler(authController.requestCurrentUserEmailVerification));
+router.post('/users/me/avatar', requireAuth, authLimiter, asyncHandler(authController.uploadAvatar));
 router.patch('/users/me', requireAuth, asyncHandler(authController.updateProfile));
 router.post('/users/me/password', requireAuth, asyncHandler(authController.changePassword));
 

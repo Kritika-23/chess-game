@@ -1,5 +1,7 @@
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
+const fs = require('fs');
+const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 const env = require('../../config/env');
 const userRepository = require('./user.repository');
@@ -11,7 +13,6 @@ const {
   requireSafeString,
   validateEmail,
   validatePassword,
-  validateOptionalUrl,
 } = require('../../utils/validators');
 const {
   signAccessToken,
@@ -29,7 +30,13 @@ function createOpaqueToken() {
 
 function buildFrontendUrl(pathname, token) {
   const url = new URL(pathname, env.frontendUrl);
-  url.searchParams.set('token', token);
+  if (token) url.searchParams.set('token', token);
+  return url.toString();
+}
+
+function buildBackendUrl(pathname, token) {
+  const url = new URL(pathname, env.backendUrl);
+  if (token) url.searchParams.set('token', token);
   return url.toString();
 }
 
@@ -37,11 +44,47 @@ function isExpired(record) {
   return !record?.expiresAt || new Date(record.expiresAt).getTime() <= Date.now();
 }
 
+const AVATAR_MAX_BYTES = 1024 * 1024;
+const AVATAR_TYPES = {
+  'image/jpeg': 'jpg',
+  'image/png': 'png',
+  'image/webp': 'webp',
+  'image/gif': 'gif',
+};
+
+function parseAvatarDataUrl(dataUrl) {
+  const value = requireString(dataUrl, 'Avatar image', { min: 32, max: 2_800_000 });
+  const match = value.match(/^data:(image\/(?:jpeg|png|webp|gif));base64,([A-Za-z0-9+/=]+)$/);
+
+  if (!match) {
+    throw new AppError('Avatar must be a JPG, PNG, WEBP, or GIF image');
+  }
+
+  const buffer = Buffer.from(match[2], 'base64');
+  if (!buffer.length || buffer.length > AVATAR_MAX_BYTES) {
+    throw new AppError('Avatar image must be 1MB or smaller');
+  }
+
+  return {
+    buffer,
+    extension: AVATAR_TYPES[match[1]],
+  };
+}
+
+function buildPublicUploadUrl(relativePath) {
+  return new URL(relativePath, env.backendUrl).toString();
+}
+
 class AuthService {
-  async register({ email, password, name }) {
+  async register({ email, password, confirmPassword, name }) {
     const normalizedEmail = validateEmail(email);
     const displayName = requireSafeString(name, 'Name', { min: 2, max: 50 });
     const validPassword = validatePassword(password);
+    const validConfirmPassword = validatePassword(confirmPassword, 'Confirm password');
+
+    if (validPassword !== validConfirmPassword) {
+      throw new AppError('Password and Confirm Password must match');
+    }
 
     if (userRepository.findByEmail(normalizedEmail)) {
       throw new AppError('Email is already registered', 409);
@@ -55,7 +98,7 @@ class AuthService {
     }));
 
     const verification = this.createEmailVerificationToken(user.id);
-    const verificationUrl = buildFrontendUrl('/verify-email', verification.token);
+    const verificationUrl = buildBackendUrl('/api/auth/email/verify', verification.token);
     await this.sendEmailVerificationLink(user, verificationUrl);
 
     return {
@@ -75,10 +118,6 @@ class AuthService {
     const passwordMatches = await bcrypt.compare(providedPassword, user.passwordHash);
     if (!passwordMatches) {
       throw new AppError('Invalid email or password', 401);
-    }
-
-    if (!user.emailVerified) {
-      throw new AppError('Please verify your email before signing in', 403);
     }
 
     return this.createSession(user);
@@ -172,13 +211,6 @@ updateProfile(userId, updates) {
     allowedUpdates.dateOfBirth = updates.dateOfBirth;
   }
 
-  if (updates.avatarUrl !== undefined) {
-    allowedUpdates.avatarUrl = validateOptionalUrl(
-      updates.avatarUrl,
-      "Avatar URL"
-    );
-  }
-
  allowedUpdates.updatedAt = new Date().toISOString();
 
 const user = userRepository.update(userId, allowedUpdates);
@@ -189,6 +221,23 @@ const user = userRepository.update(userId, allowedUpdates);
 
   return sanitizeUser(user);
 }
+
+  async uploadAvatar(userId, { image }) {
+    const user = userRepository.findById(userId);
+    if (!user) throw new AppError('User not found', 404);
+
+    const avatar = parseAvatarDataUrl(image);
+    const uploadDir = path.resolve(__dirname, '..', '..', 'uploads', 'avatars');
+    fs.mkdirSync(uploadDir, { recursive: true });
+
+    const filename = `${userId}-${Date.now()}-${crypto.randomBytes(8).toString('hex')}.${avatar.extension}`;
+    fs.writeFileSync(path.join(uploadDir, filename), avatar.buffer);
+
+    const avatarUrl = buildPublicUploadUrl(`/uploads/avatars/${filename}`);
+    const updatedUser = userRepository.update(userId, { avatarUrl });
+    return sanitizeUser(updatedUser);
+  }
+
   async changePassword(userId, { currentPassword, newPassword }) {
     const user = userRepository.findById(userId);
     if (!user) throw new AppError('User not found', 404);
@@ -217,17 +266,53 @@ const user = userRepository.update(userId, allowedUpdates);
     }
 
     const verification = this.createEmailVerificationToken(user.id);
-    const verificationUrl = buildFrontendUrl('/verify-email', verification.token);
+    const verificationUrl = buildBackendUrl('/api/auth/email/verify', verification.token);
     await this.sendEmailVerificationLink(user, verificationUrl);
     return this.emailSentResponse();
+  }
+
+  async requestCurrentUserEmailVerification(userId) {
+    const user = userRepository.findById(userId);
+    if (!user) throw new AppError('User not found', 404);
+
+    if (user.emailVerified) {
+      return {
+        sent: false,
+        message: 'Email is already verified.',
+      };
+    }
+
+    const verification = this.createEmailVerificationToken(user.id);
+    const verificationUrl = buildBackendUrl('/api/auth/email/verify', verification.token);
+    await this.sendEmailVerificationLink(user, verificationUrl);
+    return {
+      sent: true,
+      message: 'Verification email sent.',
+    };
   }
 
   verifyEmail(token) {
     const providedToken = requireString(token, 'Verification token', { min: 16, max: 256 });
     const tokenHash = hashToken(providedToken);
-    const record = userRepository.findEmailVerificationToken(tokenHash);
+    const record = userRepository.findAnyEmailVerificationToken(tokenHash);
 
-    if (!record || isExpired(record)) {
+    if (!record) {
+      throw new AppError('Verification token is invalid or expired', 400);
+    }
+
+    if (record.usedAt) {
+      const alreadyVerifiedUser = userRepository.findById(record.userId);
+      if (alreadyVerifiedUser?.emailVerified) {
+        return {
+          verified: true,
+          message: 'Email is already verified.',
+        };
+      }
+
+      throw new AppError('Verification token is invalid or expired', 400);
+    }
+
+    if (isExpired(record)) {
       throw new AppError('Verification token is invalid or expired', 400);
     }
 
@@ -235,7 +320,10 @@ const user = userRepository.update(userId, allowedUpdates);
     if (!user) throw new AppError('User not found', 404);
 
     userRepository.markEmailVerificationTokenUsed(tokenHash);
-    return this.createSession(user);
+    return {
+      verified: true,
+      message: 'Email verified. Please sign in.',
+    };
   }
 
   async requestPasswordReset({ email }) {
@@ -251,9 +339,14 @@ const user = userRepository.update(userId, allowedUpdates);
     return this.emailSentResponse();
   }
 
-  async resetPassword({ token, password }) {
+  async resetPassword({ token, password, confirmPassword }) {
     const providedToken = requireString(token, 'Reset token', { min: 16, max: 256 });
     const validPassword = validatePassword(password, 'Password');
+    const validConfirmPassword = validatePassword(confirmPassword, 'Confirm password');
+
+    if (validPassword !== validConfirmPassword) {
+      throw new AppError('Password and Confirm Password must match');
+    }
     const tokenHash = hashToken(providedToken);
     const record = userRepository.findPasswordResetToken(tokenHash);
 

@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Camera } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useGame } from "../context/GameContext";
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -25,16 +26,18 @@ function getInitials(user) {
 }
 
 export default function ProfilePage() {
-  const { user, updateProfile } = useAuth();
+  const { user, updateProfile, uploadAvatar, requestEmailVerification } = useAuth();
   const { notify } = useGame();
+  const avatarInputRef = useRef(null);
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [sendingVerification, setSendingVerification] = useState(false);
   const [form, setForm] = useState({
     name: "",
     username: "",
     country: "",
     bio: "",
-    avatarUrl: "",
   });
 
   useEffect(() => {
@@ -44,7 +47,6 @@ export default function ProfilePage() {
       username: user.username || "",
       country: user.country || "",
       bio: user.bio || "",
-      avatarUrl: user.avatarUrl || "",
     });
   }, [user]);
 
@@ -73,6 +75,53 @@ export default function ProfilePage() {
     }
   };
 
+  const handleAvatarSelected = async (event) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+    if (!allowedTypes.includes(file.type)) {
+      notify("error", "Please choose a JPG, PNG, WEBP, or GIF image.", 4000);
+      return;
+    }
+
+    if (file.size > 1024 * 1024) {
+      notify("error", "Avatar image must be 1MB or smaller.", 4000);
+      return;
+    }
+
+    setUploadingAvatar(true);
+    const reader = new FileReader();
+    reader.onload = async () => {
+      try {
+        await uploadAvatar(reader.result);
+        notify("success", "Avatar uploaded successfully.", 3000);
+      } catch (error) {
+        notify("error", error.message || "Unable to upload avatar.", 4000);
+      } finally {
+        setUploadingAvatar(false);
+      }
+    };
+    reader.onerror = () => {
+      setUploadingAvatar(false);
+      notify("error", "Unable to read that image.", 4000);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSendVerification = async () => {
+    setSendingVerification(true);
+    try {
+      await requestEmailVerification();
+      notify("success", "Verification email sent.", 3000);
+    } catch (error) {
+      notify("error", error.message || "Unable to send verification email.", 4000);
+    } finally {
+      setSendingVerification(false);
+    }
+  };
+
   if (!user) {
     return <SkeletonLoader variant="profile" />;
   }
@@ -83,8 +132,25 @@ export default function ProfilePage() {
         <div className="profile-hero-card">
           <div className="profile-avatar-wrap">
             <div className="profile-avatar">
-              {form.avatarUrl ? <img src={form.avatarUrl} alt="" /> : <span>{getInitials(user)}</span>}
+              {user.avatarUrl ? <img src={user.avatarUrl} alt="" /> : <span>{getInitials(user)}</span>}
             </div>
+            <input
+              ref={avatarInputRef}
+              className="profile-avatar-input"
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+              onChange={handleAvatarSelected}
+            />
+            <button
+              className="profile-avatar-upload"
+              type="button"
+              onClick={() => avatarInputRef.current?.click()}
+              disabled={uploadingAvatar}
+              aria-label="Upload avatar"
+              title="Upload avatar"
+            >
+              {uploadingAvatar ? <LoadingSpinner label="" inline size="sm" /> : <Camera size={18} strokeWidth={2.2} />}
+            </button>
             <div className="profile-rating">
               <span>{stats.rating}</span>
               <small>Rating</small>
@@ -95,10 +161,18 @@ export default function ProfilePage() {
             <p className="profile-kicker">Player Profile</p>
             <h1>{user.name || "Unnamed Player"}</h1>
             <p className="profile-username">@{user.username || "choose-username"}</p>
+            <div className={`profile-verification ${user.emailVerified ? "verified" : "unverified"}`}>
+              {user.emailVerified ? "Email Verified" : "Email Not Verified"}
+            </div>
             <p className="profile-bio">{user.bio || "No bio yet. Add a short note about your chess style."}</p>
           </div>
 
           <div className="profile-actions">
+            {!user.emailVerified && (
+              <button className="btn btn-secondary" onClick={handleSendVerification} disabled={sendingVerification}>
+                {sendingVerification ? <LoadingSpinner label="" inline size="sm" /> : "Send Verification Email"}
+              </button>
+            )}
             <button className="btn btn-outline" onClick={() => setEditing((value) => !value)}>
               {editing ? "Cancel" : "Edit Profile"}
             </button>
@@ -132,13 +206,13 @@ export default function ProfilePage() {
               </label>
 
               <label>
-                <span>Country</span>
-                <input value={form.country} onChange={update("country")} disabled={!editing} maxLength={50} />
+                <span>Email Verification Status</span>
+                <input value={user.emailVerified ? "Email Verified" : "Email Not Verified"} disabled />
               </label>
 
-              <label className="wide">
-                <span>Avatar URL</span>
-                <input value={form.avatarUrl} onChange={update("avatarUrl")} disabled={!editing} maxLength={500} />
+              <label>
+                <span>Country</span>
+                <input value={form.country} onChange={update("country")} disabled={!editing} maxLength={50} />
               </label>
 
               <label className="wide">

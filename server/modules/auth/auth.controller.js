@@ -28,6 +28,16 @@ function sessionResponse(session) {
   return safeSession;
 }
 
+function buildFrontendRedirect(params = {}) {
+  const url = new URL('/', env.frontendUrl);
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
+      url.searchParams.set(key, String(value));
+    }
+  });
+  return url.toString();
+}
+
 async function csrf(req, res) {
   res.json({ csrfToken: setCsrfCookie(res) });
 }
@@ -66,6 +76,11 @@ async function updateProfile(req, res) {
   res.json({ user });
 }
 
+async function uploadAvatar(req, res) {
+  const user = await authService.uploadAvatar(req.user.id, req.body || {});
+  res.json({ user });
+}
+
 async function changePassword(req, res) {
   await authService.changePassword(req.user.id, req.body || {});
   clearAuthCookies(res);
@@ -76,10 +91,21 @@ async function requestEmailVerification(req, res) {
   res.json(await authService.requestEmailVerification(req.body || {}));
 }
 
+async function requestCurrentUserEmailVerification(req, res) {
+  res.json(await authService.requestCurrentUserEmailVerification(req.user.id));
+}
+
 async function verifyEmail(req, res) {
-  const session = authService.verifyEmail(req.body?.token);
-  setAuthCookies(res, session);
-  res.json(sessionResponse(session));
+  res.json(authService.verifyEmail(req.body?.token));
+}
+
+async function verifyEmailRedirect(req, res) {
+  try {
+    authService.verifyEmail(req.query?.token);
+    res.redirect(302, buildFrontendRedirect({ emailVerified: '1' }));
+  } catch (error) {
+    res.redirect(302, buildFrontendRedirect({ emailVerificationError: '1' }));
+  }
 }
 
 async function requestPasswordReset(req, res) {
@@ -100,9 +126,12 @@ module.exports = {
   refresh,
   getProfile,
   updateProfile,
+  uploadAvatar,
   changePassword,
   requestEmailVerification,
+  requestCurrentUserEmailVerification,
   verifyEmail,
+  verifyEmailRedirect,
   requestPasswordReset,
   resetPassword,
 };

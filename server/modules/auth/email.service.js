@@ -43,12 +43,19 @@ class EmailService {
   async sendPasswordResetEmail({ to, resetUrl }) {
     return this.sendMail({
       to,
-      subject: 'Reset your password',
+      subject: 'Reset your ChessLive password',
       text: `Use this link to reset your password: ${resetUrl}`,
       html: `
-        <p>Use the link below to reset your password.</p>
-        <p><a href="${resetUrl}">Reset password</a></p>
-        <p>If you did not request this, you can ignore this email.</p>
+        <div style="font-family:Arial,sans-serif;line-height:1.5;color:#1f2933">
+          <h2>Reset your ChessLive password</h2>
+          <p>Use the button below to choose a new password. This link expires in 1 hour.</p>
+          <p>
+            <a href="${resetUrl}" style="display:inline-block;background:#c9a86a;color:#1c1611;padding:12px 18px;border-radius:8px;text-decoration:none;font-weight:700">
+              Reset Password
+            </a>
+          </p>
+          <p>If you did not request this, you can ignore this email.</p>
+        </div>
       `,
     });
   }
@@ -56,12 +63,19 @@ class EmailService {
   async sendEmailVerificationEmail({ to, verificationUrl }) {
     return this.sendMail({
       to,
-      subject: 'Verify your email address',
+      subject: 'Verify your ChessLive email address',
       text: `Use this link to verify your email address: ${verificationUrl}`,
       html: `
-        <p>Use the link below to verify your email address.</p>
-        <p><a href="${verificationUrl}">Verify email</a></p>
-        <p>If you did not request this, you can ignore this email.</p>
+        <div style="font-family:Arial,sans-serif;line-height:1.5;color:#1f2933">
+          <h2>Verify your ChessLive email</h2>
+          <p>Confirm your email address to secure your ChessLive account. This link expires in 24 hours.</p>
+          <p>
+            <a href="${verificationUrl}" style="display:inline-block;background:#c9a86a;color:#1c1611;padding:12px 18px;border-radius:8px;text-decoration:none;font-weight:700">
+              Verify Email
+            </a>
+          </p>
+          <p>If you did not request this, you can ignore this email.</p>
+        </div>
       `,
     });
   }
