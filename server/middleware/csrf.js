@@ -7,36 +7,42 @@ const CSRF_COOKIE = 'csrfToken';
 const CSRF_HEADER = 'x-csrf-token';
 const SAFE_METHODS = new Set(['GET', 'HEAD', 'OPTIONS']);
 const TOKEN_TTL_MS = 60 * 60 * 1000;
-const issuedTokens = new Map();
 
-function rememberCsrfToken(token) {
-  issuedTokens.set(token, Date.now() + TOKEN_TTL_MS);
-}
-
-function pruneExpiredTokens() {
-  const now = Date.now();
-  issuedTokens.forEach((expiresAt, token) => {
-    if (expiresAt <= now) issuedTokens.delete(token);
-  });
-}
-
-function isKnownCsrfToken(token) {
-  if (!token) return false;
-  const expiresAt = issuedTokens.get(token);
-  if (!expiresAt || expiresAt <= Date.now()) {
-    issuedTokens.delete(token);
-    return false;
-  }
-  return true;
+function signCsrfPayload(payload) {
+  return crypto
+    .createHmac('sha256', env.jwtAccessSecret)
+    .update(payload)
+    .digest('base64url');
 }
 
 function createCsrfToken() {
-  return crypto.randomBytes(32).toString('base64url');
+  const payload = [
+    crypto.randomBytes(32).toString('base64url'),
+    Date.now() + TOKEN_TTL_MS,
+  ].join('.');
+  return `${payload}.${signCsrfPayload(payload)}`;
+}
+
+function isValidCsrfToken(token) {
+  if (!token) return false;
+  const parts = token.split('.');
+  if (parts.length !== 3) return false;
+
+  const [nonce, expiresAt, signature] = parts;
+  if (!nonce || !expiresAt || !signature) return false;
+  if (Number(expiresAt) <= Date.now()) return false;
+
+  const payload = `${nonce}.${expiresAt}`;
+  const expectedSignature = signCsrfPayload(payload);
+  if (signature.length !== expectedSignature.length) return false;
+
+  return crypto.timingSafeEqual(
+    Buffer.from(signature),
+    Buffer.from(expectedSignature)
+  );
 }
 
 function setCsrfCookie(res, token = createCsrfToken()) {
-  pruneExpiredTokens();
-  rememberCsrfToken(token);
   res.append(
     'Set-Cookie',
     serializeCookie(CSRF_COOKIE, token, getCookieOptions(env, {
@@ -54,9 +60,9 @@ function csrfProtection(req, res, next) {
   const cookieToken = req.cookies?.[CSRF_COOKIE];
   const headerToken = req.headers[CSRF_HEADER];
   const hasMatchingCookieToken = cookieToken && headerToken && cookieToken === headerToken;
-  const hasKnownHeaderToken = headerToken && isKnownCsrfToken(headerToken);
+  const hasValidHeaderToken = isValidCsrfToken(headerToken);
 
-  if (!hasMatchingCookieToken && !hasKnownHeaderToken) {
+  if (!hasMatchingCookieToken && !hasValidHeaderToken) {
     return next(new AppError('Invalid CSRF token', 403));
   }
 
