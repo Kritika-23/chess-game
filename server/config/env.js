@@ -31,25 +31,48 @@ function parseList(value, fallback = []) {
     .filter(Boolean);
 }
 
+function readEnv(name, fallback = '') {
+  return (process.env[name] || fallback).trim();
+}
+
+function normalizeOrigin(origin) {
+  return origin.trim().replace(/\/+$/, '');
+}
+
+function uniqueOrigins(origins) {
+  return [...new Set(origins.filter(Boolean).map(normalizeOrigin))];
+}
+
+const port = Number(process.env.PORT) || 3001;
+const backendUrl = readEnv('BACKEND_URL', `http://localhost:${port}`);
+const frontendUrl = readEnv('FRONTEND_URL', 'http://localhost:3000');
+const corsOrigins = uniqueOrigins([
+  ...parseList(readEnv('CORS_ORIGINS')),
+  readEnv('CORS_ORIGIN'),
+  frontendUrl,
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+]);
+
 module.exports = {
-  port: Number(process.env.PORT) || 3001,
-  backendUrl: process.env.BACKEND_URL || `http://localhost:${Number(process.env.PORT) || 3001}`,
-  corsOrigins: parseList(process.env.CORS_ORIGINS || process.env.CORS_ORIGIN, ['http://localhost:3000']),
-  corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:3000',
-  frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3000',
-  nodeEnv: process.env.NODE_ENV || 'development',
-  databaseUrl: process.env.DATABASE_URL || null,
-  smtpHost: process.env.SMTP_HOST || (process.env.SMTP_USER ? 'smtp.gmail.com' : ''),
+  port,
+  backendUrl,
+  corsOrigins,
+  corsOrigin: readEnv('CORS_ORIGIN', frontendUrl),
+  frontendUrl,
+  nodeEnv: readEnv('NODE_ENV', 'development'),
+  databaseUrl: readEnv('DATABASE_URL') || null,
+  smtpHost: readEnv('SMTP_HOST') || (readEnv('SMTP_USER') ? 'smtp.gmail.com' : ''),
   smtpPort: Number(process.env.SMTP_PORT) || 587,
-  smtpSecure: process.env.SMTP_SECURE === 'true',
-  smtpUser: process.env.SMTP_USER || '',
-  smtpPass: process.env.SMTP_PASS || '',
-  smtpFrom: process.env.SMTP_FROM || 'Chess Game <no-reply@example.com>',
-  jwtAccessSecret: process.env.JWT_ACCESS_SECRET || 'dev-access-secret-change-me',
-  jwtRefreshSecret: process.env.JWT_REFRESH_SECRET || 'dev-refresh-secret-change-me',
-  jwtAccessExpiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '15m',
-  jwtRefreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
-  cookieSecure: process.env.COOKIE_SECURE === 'true',
-  cookieSameSite: process.env.COOKIE_SAME_SITE || 'Lax',
+  smtpSecure: readEnv('SMTP_SECURE') === 'true',
+  smtpUser: readEnv('SMTP_USER'),
+  smtpPass: readEnv('SMTP_PASS'),
+  smtpFrom: readEnv('SMTP_FROM', 'Chess Game <no-reply@example.com>'),
+  jwtAccessSecret: readEnv('JWT_ACCESS_SECRET', 'dev-access-secret-change-me'),
+  jwtRefreshSecret: readEnv('JWT_REFRESH_SECRET', 'dev-refresh-secret-change-me'),
+  jwtAccessExpiresIn: readEnv('JWT_ACCESS_EXPIRES_IN', '15m'),
+  jwtRefreshExpiresIn: readEnv('JWT_REFRESH_EXPIRES_IN', '7d'),
+  cookieSecure: readEnv('COOKIE_SECURE') === 'true',
+  cookieSameSite: readEnv('COOKIE_SAME_SITE', 'Lax'),
   guestModeEnabled: false,
 };
