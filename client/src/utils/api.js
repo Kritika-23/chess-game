@@ -1,9 +1,24 @@
 const apiHost = typeof window !== 'undefined' && window.location.hostname
   ? window.location.hostname
   : 'localhost';
-const SERVER_URL = process.env.REACT_APP_SERVER_URL || `http://${apiHost}:3001`;
+const SERVER_URL = process.env.REACT_APP_SERVER_URL || (
+  process.env.NODE_ENV === 'production' ? '' : `http://${apiHost}:3001`
+);
+const ACCESS_TOKEN_KEY = 'chessAccessToken';
 let cachedCsrfToken = '';
 let refreshPromise = null;
+
+export function getAccessToken() {
+  return sessionStorage.getItem(ACCESS_TOKEN_KEY) || '';
+}
+
+export function setAccessToken(token = '') {
+  if (token) {
+    sessionStorage.setItem(ACCESS_TOKEN_KEY, token);
+  } else {
+    sessionStorage.removeItem(ACCESS_TOKEN_KEY);
+  }
+}
 
 const SKIP_REFRESH_PATHS = new Set([
   '/api/auth/login',
@@ -76,8 +91,12 @@ async function refreshSession() {
       });
 
       if (!response.ok) {
+        setAccessToken('');
         throw new Error('Session expired');
       }
+
+      const data = await parseJsonResponse(response.clone());
+      setAccessToken(data.accessToken);
 
       cachedCsrfToken = '';
       await ensureCsrfToken();
@@ -100,6 +119,11 @@ async function readErrorMessage(response) {
 export async function apiFetch(path, options = {}) {
   const method = (options.method || 'GET').toUpperCase();
   const headers = new Headers(options.headers || {});
+  const accessToken = getAccessToken();
+
+  if (accessToken && !headers.has('Authorization')) {
+    headers.set('Authorization', `Bearer ${accessToken}`);
+  }
 
   if (options.body && !headers.has('Content-Type')) {
     headers.set('Content-Type', 'application/json');
@@ -133,12 +157,18 @@ export async function apiFetch(path, options = {}) {
     try {
       await refreshSession();
 
+      const refreshedAccessToken = getAccessToken();
+      if (refreshedAccessToken) {
+        headers.set('Authorization', `Bearer ${refreshedAccessToken}`);
+      }
+
       if (needsCsrf) {
         headers.set('x-csrf-token', await ensureCsrfToken());
       }
 
       response = await fetch(`${SERVER_URL}${path}`, request);
     } catch {
+      setAccessToken('');
       window.dispatchEvent(new Event('auth:session-expired'));
     }
   }

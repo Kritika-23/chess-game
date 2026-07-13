@@ -24,7 +24,7 @@ function clearAuthCookies(res) {
 }
 
 function sessionResponse(session) {
-  const { accessToken, refreshToken, ...safeSession } = session;
+  const { refreshToken, ...safeSession } = session;
   return safeSession;
 }
 

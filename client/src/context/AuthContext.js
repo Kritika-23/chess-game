@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { apiFetch, ensureCsrfToken, readJsonResponse } from '../utils/api';
+import { apiFetch, ensureCsrfToken, readJsonResponse, setAccessToken } from '../utils/api';
 
 const AuthContext = createContext(null);
 
@@ -25,6 +25,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const handleSessionExpired = () => {
+      setAccessToken('');
       setUser(null);
     };
 
@@ -40,6 +41,7 @@ export function AuthProvider({ children }) {
       method: 'POST',
       body: JSON.stringify({ email, password }),
     }));
+    setAccessToken(data.accessToken);
     setUser(data.user);
     return data;
   }, []);
@@ -70,6 +72,7 @@ export function AuthProvider({ children }) {
       method: 'POST',
       body: JSON.stringify({ currentPassword, newPassword }),
     }));
+    setAccessToken('');
     setUser(null);
   }, []);
 
@@ -102,6 +105,7 @@ const uploadAvatar = useCallback(async (image) => {
     try {
       await apiFetch('/api/auth/logout', { method: 'POST' });
     } finally {
+      setAccessToken('');
       setUser(null);
     }
   }, []);
