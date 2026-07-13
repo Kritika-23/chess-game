@@ -60,25 +60,6 @@ class EmailService {
     });
   }
 
-  async sendEmailVerificationEmail({ to, verificationUrl }) {
-    return this.sendMail({
-      to,
-      subject: 'Verify your ChessLive email address',
-      text: `Use this link to verify your email address: ${verificationUrl}`,
-      html: `
-        <div style="font-family:Arial,sans-serif;line-height:1.5;color:#1f2933">
-          <h2>Verify your ChessLive email</h2>
-          <p>Confirm your email address to secure your ChessLive account. This link expires in 24 hours.</p>
-          <p>
-            <a href="${verificationUrl}" style="display:inline-block;background:#c9a86a;color:#1c1611;padding:12px 18px;border-radius:8px;text-decoration:none;font-weight:700">
-              Verify Email
-            </a>
-          </p>
-          <p>If you did not request this, you can ignore this email.</p>
-        </div>
-      `,
-    });
-  }
 }
 
 module.exports = new EmailService();

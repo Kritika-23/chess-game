@@ -1,4 +1,6 @@
 function createInvite({ id, roomId, createdBy, invitedPlayer, expiresAt }) {
+  const now = new Date().toISOString();
+
   return {
     id,
     roomId,
@@ -7,8 +9,9 @@ function createInvite({ id, roomId, createdBy, invitedPlayer, expiresAt }) {
     invitedPlayer,
     invitedUserId: invitedPlayer?.id || null,
     status: 'pending',
-    expiresAt,
-    createdAt: new Date(),
+    expiresAt: new Date(expiresAt).toISOString(),
+    createdAt: now,
+    updatedAt: now,
   };
 }
 

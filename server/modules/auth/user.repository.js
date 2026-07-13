@@ -9,10 +9,6 @@ class UserRepository {
     return getCollection('refreshTokens');
   }
 
-  emailVerificationTokens() {
-    return getCollection('emailVerificationTokens');
-  }
-
   passwordResetTokens() {
     return getCollection('passwordResetTokens');
   }
@@ -23,6 +19,11 @@ class UserRepository {
 
   findByEmail(email) {
     return this.users().find((user) => user.email.toLowerCase() === email.toLowerCase()) || null;
+  }
+
+  findByUsername(username) {
+    const normalizedUsername = username.toLowerCase();
+    return this.users().find((user) => user.username?.toLowerCase() === normalizedUsername) || null;
   }
 
   create(user) {
@@ -65,28 +66,6 @@ class UserRepository {
       }
     });
     saveDatabase();
-  }
-
-  saveEmailVerificationToken(tokenRecord) {
-    this.emailVerificationTokens().push(tokenRecord);
-    saveDatabase();
-    return tokenRecord;
-  }
-
-  findEmailVerificationToken(tokenHash) {
-    return this.emailVerificationTokens().find((record) => record.tokenHash === tokenHash && !record.usedAt) || null;
-  }
-
-  findAnyEmailVerificationToken(tokenHash) {
-    return this.emailVerificationTokens().find((record) => record.tokenHash === tokenHash) || null;
-  }
-
-  markEmailVerificationTokenUsed(tokenHash) {
-    const record = this.findEmailVerificationToken(tokenHash);
-    if (record) {
-      record.usedAt = new Date().toISOString();
-      saveDatabase();
-    }
   }
 
   savePasswordResetToken(tokenRecord) {

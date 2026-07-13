@@ -11,6 +11,7 @@ import LandingPage from "./pages/LandingPage";
 import WaitingRoom from "./pages/WaitingRoom";
 import GamePage from "./pages/GamePage";
 import ProfilePage from "./pages/ProfilePage";
+import InvitesPage from "./pages/InvitesPage";
 import ComputerGamePage from "./pages/ComputerGamePage";
 
 import Navbar from "./components/Navbar";
@@ -20,7 +21,7 @@ import SkeletonLoader from "./components/SkeletonLoader";
 import "./styles/App.css";
 
 function AppShell() {
-  const { state, notify } = useGame();
+  const { state } = useGame();
   const { user, loading, logout } = useAuth();
   const { soundEnabled, toggleSound } = useSound();
   const socket = useSocket();
@@ -49,7 +50,7 @@ function AppShell() {
   };
 
   useEffect(() => {
-    if (user && !["verify", "reset"].includes(authMode)) {
+    if (user && authMode !== "reset") {
       setCurrentPage(pendingPage || "home");
       setAuthMode(null);
       setAuthToken("");
@@ -61,30 +62,9 @@ function AppShell() {
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token") || "";
     const path = window.location.pathname;
-    const emailVerified = params.get("emailVerified");
-    const emailVerificationError = params.get("emailVerificationError");
-
-    if (emailVerified) {
-      notify("success", "Email verified successfully.", 4000);
-      if (user) setCurrentPage("profile");
-      else setAuthMode("login");
-      window.history.replaceState({}, document.title, "/");
-      return;
-    }
-
-    if (emailVerificationError) {
-      notify("error", "Verification link is invalid or expired. Please send a new verification email.", 6000);
-      if (!user) setAuthMode("login");
-      window.history.replaceState({}, document.title, "/");
-      return;
-    }
-
     if (!token) return;
 
-    if (path === "/verify-email") {
-      setAuthMode("verify");
-      setAuthToken(token);
-    } else if (path === "/reset-password") {
+    if (path === "/reset-password") {
       setAuthMode("reset");
       setAuthToken(token);
     } else {
@@ -92,7 +72,7 @@ function AppShell() {
     }
 
     window.history.replaceState({}, document.title, "/");
-  }, [notify, user]);
+  }, []);
 
   const showLogin = () => setAuthMode("login");
   const showSignUp = () => setAuthMode("register");
@@ -108,12 +88,17 @@ function AppShell() {
     setAuthMode(null);
   };
 
+  const openInviteRoom = (roomId) => {
+    sessionStorage.setItem("prefillRoom", roomId);
+    setCurrentPage("home");
+  };
+
   // Loading screen
   if (loading) {
     return <SkeletonLoader variant="home" />;
   }
 
-  if (["verify", "reset"].includes(authMode)) {
+  if (authMode === "reset") {
     return (
       <div className="app-root">
         <Navbar
@@ -136,16 +121,6 @@ function AppShell() {
             setPendingPage(null);
             setAuthMode(null);
             setAuthToken("");
-          }}
-          onEmailVerified={() => {
-            if (user) {
-              setCurrentPage("profile");
-              setAuthMode(null);
-              setAuthToken("");
-            } else {
-              setAuthMode("login");
-              setAuthToken("");
-            }
           }}
         />
       </div>
@@ -174,10 +149,6 @@ function AppShell() {
               setCurrentPage(pendingPage || "home");
               setPendingPage(null);
               setAuthMode(null);
-              setAuthToken("");
-            }}
-            onEmailVerified={() => {
-              setAuthMode("login");
               setAuthToken("");
             }}
           />
@@ -216,6 +187,7 @@ function AppShell() {
       />
 
       {currentPage === "profile" && <ProfilePage />}
+      {currentPage === "invites" && <InvitesPage onOpenRoom={openInviteRoom} />}
       {currentPage === "computer" && user && <ComputerGamePage onReturnHome={() => setCurrentPage("home")} />}
       {currentPage === "home" && content}
 

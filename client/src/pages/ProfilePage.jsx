@@ -3,6 +3,7 @@ import { Camera } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useGame } from "../context/GameContext";
 import LoadingSpinner from "../components/LoadingSpinner";
+import PasswordInput from "../components/PasswordInput";
 import SkeletonLoader from "../components/SkeletonLoader";
 import "../styles/ProfilePage.css";
 
@@ -26,13 +27,18 @@ function getInitials(user) {
 }
 
 export default function ProfilePage() {
-  const { user, updateProfile, uploadAvatar, requestEmailVerification } = useAuth();
+  const { user, updateProfile, uploadAvatar, changePassword } = useAuth();
   const { notify } = useGame();
   const avatarInputRef = useRef(null);
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
-  const [sendingVerification, setSendingVerification] = useState(false);
+  const [changingPassword, setChangingPassword] = useState(false);
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
   const [form, setForm] = useState({
     name: "",
     username: "",
@@ -60,6 +66,40 @@ export default function ProfilePage() {
 
   const update = (field) => (event) => {
     setForm((current) => ({ ...current, [field]: event.target.value }));
+  };
+
+  const updatePassword = (field) => (event) => {
+    setPasswordForm((current) => ({ ...current, [field]: event.target.value }));
+  };
+
+  const handleChangePassword = async (event) => {
+    event.preventDefault();
+
+    if (!passwordForm.currentPassword || !passwordForm.newPassword || !passwordForm.confirmPassword) {
+      notify("error", "All password fields are required.", 4000);
+      return;
+    }
+    if (passwordForm.newPassword.length < 8) {
+      notify("error", "New password must be at least 8 characters.", 4000);
+      return;
+    }
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      notify("error", "New Password and Confirm Password must match.", 4000);
+      return;
+    }
+
+    setChangingPassword(true);
+    try {
+      await changePassword({
+        currentPassword: passwordForm.currentPassword,
+        newPassword: passwordForm.newPassword,
+      });
+      notify("success", "Password changed. Please sign in again.", 4000);
+    } catch (error) {
+      notify("error", error.message || "Unable to change password.", 4000);
+    } finally {
+      setChangingPassword(false);
+    }
   };
 
   const handleSave = async () => {
@@ -110,18 +150,6 @@ export default function ProfilePage() {
     reader.readAsDataURL(file);
   };
 
-  const handleSendVerification = async () => {
-    setSendingVerification(true);
-    try {
-      await requestEmailVerification();
-      notify("success", "Verification email sent.", 3000);
-    } catch (error) {
-      notify("error", error.message || "Unable to send verification email.", 4000);
-    } finally {
-      setSendingVerification(false);
-    }
-  };
-
   if (!user) {
     return <SkeletonLoader variant="profile" />;
   }
@@ -161,18 +189,10 @@ export default function ProfilePage() {
             <p className="profile-kicker">Player Profile</p>
             <h1>{user.name || "Unnamed Player"}</h1>
             <p className="profile-username">@{user.username || "choose-username"}</p>
-            <div className={`profile-verification ${user.emailVerified ? "verified" : "unverified"}`}>
-              {user.emailVerified ? "Email Verified" : "Email Not Verified"}
-            </div>
             <p className="profile-bio">{user.bio || "No bio yet. Add a short note about your chess style."}</p>
           </div>
 
           <div className="profile-actions">
-            {!user.emailVerified && (
-              <button className="btn btn-secondary" onClick={handleSendVerification} disabled={sendingVerification}>
-                {sendingVerification ? <LoadingSpinner label="" inline size="sm" /> : "Send Verification Email"}
-              </button>
-            )}
             <button className="btn btn-outline" onClick={() => setEditing((value) => !value)}>
               {editing ? "Cancel" : "Edit Profile"}
             </button>
@@ -203,11 +223,6 @@ export default function ProfilePage() {
               <label>
                 <span>Email</span>
                 <input value={user.email || ""} disabled />
-              </label>
-
-              <label>
-                <span>Email Verification Status</span>
-                <input value={user.emailVerified ? "Email Verified" : "Email Not Verified"} disabled />
               </label>
 
               <label>
@@ -250,6 +265,48 @@ export default function ProfilePage() {
                 <span>Draws</span>
               </div>
             </div>
+          </section>
+
+          <section className="profile-panel profile-password-panel">
+            <div className="panel-heading">
+              <h2>Change Password</h2>
+              <span>You will be signed out after changing it</span>
+            </div>
+
+            <form className="profile-password-form" onSubmit={handleChangePassword}>
+              <label>
+                <span>Current Password</span>
+                <PasswordInput
+                  value={passwordForm.currentPassword}
+                  onChange={updatePassword("currentPassword")}
+                  maxLength={128}
+                  required
+                />
+              </label>
+              <label>
+                <span>New Password</span>
+                <PasswordInput
+                  value={passwordForm.newPassword}
+                  onChange={updatePassword("newPassword")}
+                  minLength={8}
+                  maxLength={128}
+                  required
+                />
+              </label>
+              <label>
+                <span>Confirm New Password</span>
+                <PasswordInput
+                  value={passwordForm.confirmPassword}
+                  onChange={updatePassword("confirmPassword")}
+                  minLength={8}
+                  maxLength={128}
+                  required
+                />
+              </label>
+              <button className="btn btn-primary" type="submit" disabled={changingPassword}>
+                {changingPassword ? <LoadingSpinner label="" inline size="sm" /> : "Update Password"}
+              </button>
+            </form>
           </section>
         </div>
       </section>

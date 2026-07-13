@@ -16,6 +16,9 @@ function registerSockets(io) {
 
   io.on(events.CONNECTION, (socket) => {
     authenticateSocket(socket);
+    if (socket.data.user?.id) {
+      socket.join(`user:${socket.data.user.id}`);
+    }
     registerGameSocket(io, socket);
     registerInviteSocket(io, socket);
   });

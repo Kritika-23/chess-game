@@ -28,16 +28,6 @@ function sessionResponse(session) {
   return safeSession;
 }
 
-function buildFrontendRedirect(params = {}) {
-  const url = new URL('/', env.frontendUrl);
-  Object.entries(params).forEach(([key, value]) => {
-    if (value !== undefined && value !== null) {
-      url.searchParams.set(key, String(value));
-    }
-  });
-  return url.toString();
-}
-
 async function csrf(req, res) {
   res.json({ csrfToken: setCsrfCookie(res) });
 }
@@ -87,27 +77,6 @@ async function changePassword(req, res) {
   res.status(204).send();
 }
 
-async function requestEmailVerification(req, res) {
-  res.json(await authService.requestEmailVerification(req.body || {}));
-}
-
-async function requestCurrentUserEmailVerification(req, res) {
-  res.json(await authService.requestCurrentUserEmailVerification(req.user.id));
-}
-
-async function verifyEmail(req, res) {
-  res.json(authService.verifyEmail(req.body?.token));
-}
-
-async function verifyEmailRedirect(req, res) {
-  try {
-    authService.verifyEmail(req.query?.token);
-    res.redirect(302, buildFrontendRedirect({ emailVerified: '1' }));
-  } catch (error) {
-    res.redirect(302, buildFrontendRedirect({ emailVerificationError: '1' }));
-  }
-}
-
 async function requestPasswordReset(req, res) {
   res.json(await authService.requestPasswordReset(req.body || {}));
 }
@@ -128,10 +97,6 @@ module.exports = {
   updateProfile,
   uploadAvatar,
   changePassword,
-  requestEmailVerification,
-  requestCurrentUserEmailVerification,
-  verifyEmail,
-  verifyEmailRedirect,
   requestPasswordReset,
   resetPassword,
 };

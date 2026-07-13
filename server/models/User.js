@@ -17,8 +17,6 @@ return {
   avatarUrl: "",
 
   role: "player",
-  emailVerified: false,
-
   rating: 1200,
 
   stats: {

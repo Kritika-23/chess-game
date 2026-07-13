@@ -13,7 +13,6 @@ const connection = {
   data: {
     users: [],
     refreshTokens: [],
-    emailVerificationTokens: [],
     passwordResetTokens: [],
     rooms: [],
     invites: [],
@@ -38,7 +37,6 @@ function readDatabase() {
   connection.data = {
     users: parsed.users || [],
     refreshTokens: parsed.refreshTokens || [],
-    emailVerificationTokens: parsed.emailVerificationTokens || [],
     passwordResetTokens: parsed.passwordResetTokens || [],
     rooms: parsed.rooms || [],
     invites: parsed.invites || [],

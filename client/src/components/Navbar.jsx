@@ -46,6 +46,11 @@ export default function Navbar({
     setProfileOpen(false);
   };
 
+  const goInvites = () => {
+    setCurrentPage("invites");
+    setProfileOpen(false);
+  };
+
   return (
     <header className="site-header">
       <button className="site-brand" onClick={goHome} aria-label="ChessLive home">
@@ -55,12 +60,20 @@ export default function Navbar({
 
       <nav className="site-nav" aria-label="Primary navigation">
         {user && (
-          <button
-            className={currentPage === "home" ? "nav-link active" : "nav-link"}
-            onClick={goHome}
-          >
-            Home
-          </button>
+          <>
+            <button
+              className={currentPage === "home" ? "nav-link active" : "nav-link"}
+              onClick={goHome}
+            >
+              Home
+            </button>
+            <button
+              className={currentPage === "invites" ? "nav-link active" : "nav-link"}
+              onClick={goInvites}
+            >
+              Invites
+            </button>
+          </>
         )}
       </nav>
 
@@ -105,6 +118,7 @@ export default function Navbar({
                   <span>{user.email}</span>
                 </div>
                 <button onClick={goProfile}>My Profile</button>
+                <button onClick={goInvites}>Game Invites</button>
                 <button className="dropdown-danger" onClick={logout}>Logout</button>
               </div>
             )}

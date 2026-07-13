@@ -34,12 +34,6 @@ function buildFrontendUrl(pathname, token) {
   return url.toString();
 }
 
-function buildBackendUrl(pathname, token) {
-  const url = new URL(pathname, env.backendUrl);
-  if (token) url.searchParams.set('token', token);
-  return url.toString();
-}
-
 function isExpired(record) {
   return !record?.expiresAt || new Date(record.expiresAt).getTime() <= Date.now();
 }
@@ -96,10 +90,6 @@ class AuthService {
       passwordHash,
       name: displayName,
     }));
-
-    const verification = this.createEmailVerificationToken(user.id);
-    const verificationUrl = buildBackendUrl('/api/auth/email/verify', verification.token);
-    await this.sendEmailVerificationLink(user, verificationUrl);
 
     return {
       user: sanitizeUser(user),
@@ -254,78 +244,6 @@ const user = userRepository.update(userId, allowedUpdates);
     userRepository.revokeUserRefreshTokens(userId);
   }
 
-  async requestEmailVerification({ email }) {
-    const normalizedEmail = validateEmail(email);
-    const user = userRepository.findByEmail(normalizedEmail);
-    if (!user) {
-      return this.emailSentResponse();
-    }
-
-    if (user.emailVerified) {
-      return this.emailSentResponse();
-    }
-
-    const verification = this.createEmailVerificationToken(user.id);
-    const verificationUrl = buildBackendUrl('/api/auth/email/verify', verification.token);
-    await this.sendEmailVerificationLink(user, verificationUrl);
-    return this.emailSentResponse();
-  }
-
-  async requestCurrentUserEmailVerification(userId) {
-    const user = userRepository.findById(userId);
-    if (!user) throw new AppError('User not found', 404);
-
-    if (user.emailVerified) {
-      return {
-        sent: false,
-        message: 'Email is already verified.',
-      };
-    }
-
-    const verification = this.createEmailVerificationToken(user.id);
-    const verificationUrl = buildBackendUrl('/api/auth/email/verify', verification.token);
-    await this.sendEmailVerificationLink(user, verificationUrl);
-    return {
-      sent: true,
-      message: 'Verification email sent.',
-    };
-  }
-
-  verifyEmail(token) {
-    const providedToken = requireString(token, 'Verification token', { min: 16, max: 256 });
-    const tokenHash = hashToken(providedToken);
-    const record = userRepository.findAnyEmailVerificationToken(tokenHash);
-
-    if (!record) {
-      throw new AppError('Verification token is invalid or expired', 400);
-    }
-
-    if (record.usedAt) {
-      const alreadyVerifiedUser = userRepository.findById(record.userId);
-      if (alreadyVerifiedUser?.emailVerified) {
-        return {
-          verified: true,
-          message: 'Email is already verified.',
-        };
-      }
-
-      throw new AppError('Verification token is invalid or expired', 400);
-    }
-
-    if (isExpired(record)) {
-      throw new AppError('Verification token is invalid or expired', 400);
-    }
-
-    const user = userRepository.update(record.userId, { emailVerified: true });
-    if (!user) throw new AppError('User not found', 404);
-
-    userRepository.markEmailVerificationTokenUsed(tokenHash);
-    return {
-      verified: true,
-      message: 'Email verified. Please sign in.',
-    };
-  }
-
   async requestPasswordReset({ email }) {
     const normalizedEmail = validateEmail(email);
     const user = userRepository.findByEmail(normalizedEmail);
@@ -384,20 +302,6 @@ const user = userRepository.update(userId, allowedUpdates);
     };
   }
 
-  createEmailVerificationToken(userId) {
-    const token = createOpaqueToken();
-    userRepository.saveEmailVerificationToken({
-      id: uuidv4(),
-      userId,
-      tokenHash: hashToken(token),
-      createdAt: new Date().toISOString(),
-      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-      usedAt: null,
-    });
-
-    return { token };
-  }
-
   createPasswordResetToken(userId) {
     const token = createOpaqueToken();
     userRepository.savePasswordResetToken({
@@ -426,17 +330,6 @@ const user = userRepository.update(userId, allowedUpdates);
       send: () => emailService.sendPasswordResetEmail({
         to: user.email,
         resetUrl,
-      }),
-    });
-  }
-
-  async sendEmailVerificationLink(user, verificationUrl) {
-    await this.sendEmailOrLogDevelopmentUrl({
-      url: verificationUrl,
-      logLabel: 'Email verification URL',
-      send: () => emailService.sendEmailVerificationEmail({
-        to: user.email,
-        verificationUrl,
       }),
     });
   }

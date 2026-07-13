@@ -5,3 +5,4 @@ build/
 npm-debug.log*
 server/uploads/
 server/.npm-cache/
+server/data/db.json

@@ -8,12 +8,17 @@ function registerInviteSocket(io, socket) {
       return;
     }
 
-    const invite = inviteService.create({
-      ...payload,
-      createdBy: socket.data.user,
-    });
+    try {
+      const invite = inviteService.create({
+        ...payload,
+        createdBy: socket.data.user,
+      });
 
-    socket.emit('invite:created', { invite });
+      socket.emit('invite:created', { invite });
+      io.to(`user:${invite.invitedUserId}`).emit('invite:received', { invite });
+    } catch (error) {
+      socket.emit('error', { message: error.message || 'Unable to create invite' });
+    }
   });
 }
 

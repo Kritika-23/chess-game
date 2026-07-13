@@ -29,6 +29,7 @@ const debugRequestHeaders = process.env.DEBUG_REQUEST_HEADERS === 'true';
 const app = express();
 const server = http.createServer({ maxHeaderSize: maxRequestHeaderSize }, app);
 const io = new Server(server, socketConfig);
+app.set('io', io);
 
 function isAllowedCorsOrigin(origin) {
   if (!origin) return true;

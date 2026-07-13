@@ -1,14 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useGame } from '../context/GameContext';
 import LoadingSpinner from '../components/LoadingSpinner';
 import PasswordInput from '../components/PasswordInput';
 
-export default function AuthPage({ initialMode = 'login', initialToken = '', onAuthSuccess, onEmailVerified }) {
+export default function AuthPage({ initialMode = 'login', initialToken = '', onAuthSuccess }) {
   const {
     login,
     register,
-    verifyEmail,
     requestPasswordReset,
     resetPassword,
   } = useAuth();
@@ -18,7 +17,6 @@ export default function AuthPage({ initialMode = 'login', initialToken = '', onA
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const verificationInFlightRef = useRef('');
 
   const update = (field) => (event) => {
     setForm((current) => ({ ...current, [field]: event.target.value }));
@@ -30,39 +28,6 @@ export default function AuthPage({ initialMode = 'login', initialToken = '', onA
     setError('');
     setMessage('');
   }, [initialMode, initialToken]);
-
-  useEffect(() => {
-    if (initialMode !== 'verify' || !initialToken) return;
-    if (verificationInFlightRef.current === initialToken) return;
-    verificationInFlightRef.current = initialToken;
-
-    let active = true;
-    setLoading(true);
-    setError('');
-    setMessage('');
-
-    verifyEmail(initialToken)
-      .then(() => {
-        if (!active) return;
-        notify('success', 'Email verified. Please sign in.', 3000);
-        setMessage('Email verified. Please sign in.');
-        setMode('login');
-        onEmailVerified?.();
-      })
-      .catch((err) => {
-        if (!active) return;
-        const message = err.message || 'Email verification failed';
-        setError(message);
-        notify('error', message, 4000);
-      })
-      .finally(() => {
-        if (active) setLoading(false);
-      });
-
-    return () => {
-      active = false;
-    };
-  }, [initialMode, initialToken, notify, onEmailVerified, verifyEmail]);
 
   const validateClientForm = () => {
     if (mode === 'register') {
@@ -106,15 +71,9 @@ export default function AuthPage({ initialMode = 'login', initialToken = '', onA
           password: form.password,
           confirmPassword: form.confirmPassword,
         });
-        setMessage('Account created. Check your email for the verification link, then sign in.');
-        notify('success', 'Registration successful. Check your email to verify your account.', 4000);
+        setMessage('Account created. Please sign in.');
+        notify('success', 'Registration successful. Please sign in.', 4000);
         setMode('login');
-      } else if (mode === 'verify') {
-        if (!form.token) throw new Error('Open the verification link from your email.');
-        await verifyEmail(form.token);
-        notify('success', 'Email verified. Please sign in.', 3000);
-        setMode('login');
-        onEmailVerified?.();
       } else if (mode === 'forgot') {
         await requestPasswordReset(form.email);
         setMessage('If that email exists, a reset link has been sent.');
@@ -141,7 +100,6 @@ export default function AuthPage({ initialMode = 'login', initialToken = '', onA
   const title = {
     login: 'Sign in',
     register: 'Create account',
-    verify: 'Verifying email',
     forgot: 'Reset password',
     reset: 'Set new password',
   }[mode];
@@ -183,12 +141,6 @@ export default function AuthPage({ initialMode = 'login', initialToken = '', onA
             <div className="form-group">
               <label className="form-label">Confirm Password</label>
               <PasswordInput value={form.confirmPassword} onChange={update('confirmPassword')} minLength={8} maxLength={128} required />
-            </div>
-          )}
-
-          {mode === 'verify' && (
-            <div className="form-success">
-              {loading ? 'Verifying your email...' : 'Open the verification link from your email to continue.'}
             </div>
           )}
 

@@ -12,13 +12,8 @@ export function AuthProvider({ children }) {
       await ensureCsrfToken();
       const data = await readJsonResponse(await apiFetch('/api/users/me'));
       setUser(data.user);
-    } catch (error) {
-      try {
-        const refreshed = await readJsonResponse(await apiFetch('/api/auth/refresh', { method: 'POST' }));
-        setUser(refreshed.user);
-      } catch {
-        setUser(null);
-      }
+    } catch {
+      setUser(null);
     } finally {
       setLoading(false);
     }
@@ -27,6 +22,18 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     loadProfile();
   }, [loadProfile]);
+
+  useEffect(() => {
+    const handleSessionExpired = () => {
+      setUser(null);
+    };
+
+    window.addEventListener('auth:session-expired', handleSessionExpired);
+
+    return () => {
+      window.removeEventListener('auth:session-expired', handleSessionExpired);
+    };
+  }, []);
 
   const login = useCallback(async ({ email, password }) => {
     const data = await readJsonResponse(await apiFetch('/api/auth/login', {
@@ -44,23 +51,6 @@ export function AuthProvider({ children }) {
     }));
   }, []);
        
-  const verifyEmail = useCallback(async (token) => {
-    const data = await readJsonResponse(await apiFetch('/api/auth/email/verify', {
-      method: 'POST',
-      body: JSON.stringify({ token }),
-    }));
-    if (user) {
-      await loadProfile();
-    }
-    return data;
-  }, [loadProfile, user]);
-
-  const requestEmailVerification = useCallback(async () => {
-    return readJsonResponse(await apiFetch('/api/users/me/email/verification', {
-      method: 'POST',
-    }));
-  }, []);
-
   const requestPasswordReset = useCallback(async (email) => {
     return readJsonResponse(await apiFetch('/api/auth/password/forgot', {
       method: 'POST',
@@ -73,6 +63,14 @@ export function AuthProvider({ children }) {
       method: 'POST',
       body: JSON.stringify({ token, password, confirmPassword }),
     }));
+  }, []);
+
+  const changePassword = useCallback(async ({ currentPassword, newPassword }) => {
+    await readJsonResponse(await apiFetch('/api/users/me/password', {
+      method: 'POST',
+      body: JSON.stringify({ currentPassword, newPassword }),
+    }));
+    setUser(null);
   }, []);
 
 const updateProfile = useCallback(async (profileData) => {
@@ -113,14 +111,13 @@ const uploadAvatar = useCallback(async (image) => {
     loading,
     login,
     register,
-    verifyEmail,
-    requestEmailVerification,
     requestPasswordReset,
     resetPassword,
+    changePassword,
     updateProfile,
     uploadAvatar,
     logout,
-  }), [user, loading, login, register, verifyEmail, requestEmailVerification, requestPasswordReset, resetPassword, updateProfile, uploadAvatar, logout]);
+  }), [user, loading, login, register, requestPasswordReset, resetPassword, changePassword, updateProfile, uploadAvatar, logout]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
