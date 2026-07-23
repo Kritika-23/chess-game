@@ -134,26 +134,48 @@ App opens at `http://localhost:3000`.
 
 ## 📸 Screenshots
 
-### Homepage
-![Homepage](screenshots/homepage.png)
+<table>
+  <tr>
+    <td align="center">
+      <b>Homepage</b><br>
+      <img src="./screenshots/homepage.png" width="450">
+    </td>
+    <td align="center">
+      <b>Login</b><br>
+      <img src="./screenshots/login.png" width="450">
+    </td>
+  </tr>
 
-### Login
-![Login](screenshots/login.png)
+  <tr>
+    <td align="center">
+      <b>Join Room</b><br>
+      <img src="./screenshots/join-room.png" width="450">
+    </td>
+    <td align="center">
+      <b>Game Invites</b><br>
+      <img src="./screenshots/game-invites.png" width="450">
+    </td>
+  </tr>
 
-### Join Room
-![Join Room](screenshots/join-room.png)
+  <tr>
+    <td align="center">
+      <b>Chess Board</b><br>
+      <img src="./screenshots/chess-board.png" width="450">
+    </td>
+    <td align="center">
+      <b>Profile</b><br>
+      <img src="./screenshots/profile.png" width="450">
+    </td>
+  </tr>
 
-### Game Invites
-![Game Invites](screenshots/game-invites.png)
-
-### Chess Board
-![Chess Board](screenshots/chess-board.png)
-
-### Play with Computer
-![Play with Computer](screenshots/play-with-computer.png)
-
-### Waiting Room
-![Waiting Room](screenshots/waiting-room.png)
-
-### Profile
-![Profile](screenshots/profile.png)
+  <tr>
+    <td align="center">
+      <b>Play with Computer</b><br>
+      <img src="./screenshots/play-with-computer.png" width="450">
+    </td>
+    <td align="center">
+      <b>Waiting Room</b><br>
+      <img src="./screenshots/waiting-room.png" width="450">
+    </td>
+  </tr>
+</table>
