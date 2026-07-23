@@ -15,6 +15,26 @@ frontend, Node/Express + Socket.io + chess.js on the backend.
 - Resign, rematch (with color swap), and leave-game flows
 - Disconnect/reconnect handling — a dropped player can rejoin the same room
 - Dark/light theme toggle, fully responsive (mobile → desktop)
+- JWT Authentication
+• Password Reset
+• Profile Management
+
+
+## 🌐 Live Demo
+
+https://chess-game-seven-inky.vercel.app
+
+## 🛠️ Tech Stack
+
+- React
+- Node.js
+- Express.js
+- Socket.IO
+- Chess.js
+- React Chessboard
+- JWT Authentication
+- Tailwind CSS
+
 
 ## Project Structure
 
@@ -41,7 +61,7 @@ chess-game/
 
 ## Prerequisites
 
-- Node.js 16+ and npm
+- Node.js 22+ and npm
 
 ## Setup & Run
 
@@ -69,7 +89,7 @@ npm start
 
 App opens at `http://localhost:3000`.
 
-### 3. Play
+### 3. 🎮 How to Play
 
 1. Open `http://localhost:3000` in one browser tab — enter a name, click
    **Create Game**. You'll land in a waiting room with a room code / link.
@@ -179,3 +199,8 @@ App opens at `http://localhost:3000`.
     </td>
   </tr>
 </table>
+
+
+## 📄 License
+
+This project is licensed under the MIT License.
