@@ -129,3 +129,30 @@ App opens at `http://localhost:3000`.
 - For horizontal scaling beyond a single server process, swap the in-memory
   `rooms` object for a shared store (e.g. Redis) and use the
   `socket.io-redis` adapter so rooms work across multiple server instances.
+
+
+## 📸 Screenshots
+
+### Homepage
+![Homepage](screenshots/homepage.png)
+
+### Login
+![Login](screenshots/Login.png)
+
+### Join Room
+![Join Room](screenshots/Join%20Room.png)
+
+### Game Invites
+![Game Invites](screenshots/Game%20invites.png)
+
+### Chess Board
+![Chess Board](screenshots/Chess%20board.png)
+
+### Play with Computer
+![Play with Computer](screenshots/play%20with%20computer%20.png)
+
+### Waiting Room
+![Waiting Room](screenshots/waiting%20Room.png)
+
+### Profile
+![Profile](screenshots/Profile%20pAGE.png)
