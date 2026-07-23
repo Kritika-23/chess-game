@@ -131,28 +131,29 @@ App opens at `http://localhost:3000`.
   `socket.io-redis` adapter so rooms work across multiple server instances.
 
 
+
 ## 📸 Screenshots
 
 ### Homepage
 ![Homepage](screenshots/homepage.png)
 
 ### Login
-![Login](screenshots/Login.png)
+![Login](screenshots/login.png)
 
 ### Join Room
-![Join Room](screenshots/Join%20Room.png)
+![Join Room](screenshots/join-room.png)
 
 ### Game Invites
-![Game Invites](screenshots/Game%20invites.png)
+![Game Invites](screenshots/game-invites.png)
 
 ### Chess Board
-![Chess Board](screenshots/Chess%20board.png)
+![Chess Board](screenshots/chess-board.png)
 
 ### Play with Computer
-![Play with Computer](screenshots/play%20with%20computer%20.png)
+![Play with Computer](screenshots/play-with-computer.png)
 
 ### Waiting Room
-![Waiting Room](screenshots/waiting%20Room.png)
+![Waiting Room](screenshots/waiting-room.png)
 
 ### Profile
-![Profile](screenshots/Profile%20pAGE.png)
+![Profile](screenshots/profile.png)
